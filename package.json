@@ -1,0 +1,26 @@
+{
+  "name": "memory_gis2021",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Marissa99/Memory_GIS2021.git"
+  },
+  "author": "Marissa Reiser",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Marissa99/Memory_GIS2021/issues"
+  },
+  "homepage": "https://github.com/Marissa99/Memory_GIS2021#readme",
+  "devDependencies": {
+    "@types/mongodb": "^3.6.18",
+    "@types/node": "^15.12.4"
+  },
+  "dependencies": {
+    "mongodb": "^3.6.9"
+  }
+}
