@@ -8,15 +8,25 @@ let anzahlOffeneKarten: number = 0;
 console.log("Top");
 
 //Funktion Memory Karten aufdecken beim anklicken
+
 function bildAufdecken(_event: Event): void {
     console.log("Top");
-    let geklicktesBild: HTMLImageElement = <HTMLImageElement>_event.target; //Objekt welches geklickt wurde --> bekommmt Image
-    geklicktesBild.style.display = "none"; //oben schon in Image umgeschrieben
-    anzahlOffeneKarten =  anzahlOffeneKarten + 1 ; //lokal Variable immer um 1 erhöhen um max 2 zu erfassen
-    console.log (anzahlOffeneKarten);
+    if (anzahlOffeneKarten <= 2) {
+        let geklicktesBild: HTMLImageElement = <HTMLImageElement>_event.target; //Objekt welches geklickt wurde --> bekommmt Image
+        geklicktesBild.style.display = "none"; //oben schon in Image umgeschrieben
+        anzahlOffeneKarten =  anzahlOffeneKarten + 1 ; //lokal Variable immer um 1 erhöhen um max 2 zu erfassen
+        console.log (anzahlOffeneKarten);
+    }
 
-    if (anzahlOffeneKarten == 2) {
-        anzahlOffeneKarten = 0;
-        
+    else if (anzahlOffeneKarten == 2) {
+        for (let i: number; i > 16; i++) {
+            .style.display = "block";
+             anzahlOffeneKarten = 0;
+
+            
+
+
+        }
+  
     }
 }
