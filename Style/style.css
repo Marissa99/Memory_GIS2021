@@ -127,6 +127,7 @@ video{
     float: right;
     width: 40%;
     margin-top: 0px;
+    margin-right: 50px;
 }
 .Memory img{
     width: 200px ;
@@ -139,7 +140,7 @@ video{
     border: none;  
 }
 
-.Rückseite{
+.Rueckseite{
     position: absolute;
 }
 
@@ -170,20 +171,21 @@ video{
 
 
 
-
-
-
-
-
+/* Für Tablett konzipiert*/
 @media screen and (max-width: 1024px) {
     body, img, video{
         width: 90%;
   
     }
 }
-@media screen  and (max-width: 599px){
-    body, img, video{
-        width: 100%;
+
+/* Für Handy konzipiert*/
+@media screen  and (max-width: 600px){
+    body, header, img, video{
+        width: 30%;
+    }
+    h1, h2,h3, h4{
+        width: 50%;
     }
 }
    
