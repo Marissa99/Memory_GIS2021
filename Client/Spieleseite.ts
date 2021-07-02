@@ -1,10 +1,10 @@
 //EventListener für die Memory Karten Rückseite
-let rueckseitenCollection: HTMLCollectionOf<HTMLImageElement> = <HTMLCollectionOf<HTMLImageElement>> document.getElementsByClassName("Rueckseite"); //muss der Collection sagen das es Images sind
+let picturesCollection: HTMLCollectionOf<HTMLImageElement> = <HTMLCollectionOf<HTMLImageElement>> document.getElementsByClassName("Bild"); //muss der Collection sagen das es Images sind
 for (let i: number = 0; i < 16 ; i++) { //soll auf alle 16 Karten den Listener anwenden
-    rueckseitenCollection[i].addEventListener("click", bildAufdecken); //Zugriff auf das einzelne Element der Rückseite und Anwendung von Listener
+    picturesCollection[i].addEventListener("click", bildAufdecken); //Zugriff auf das einzelne Element der Rückseite und Anwendung von Listener
 }
 
-let listRueckClicked: Array<HTMLImageElement> = []; //leeres Array um die umgedrehten Karten/ Rückseiten zu speichern
+let listFrontClicked: Array<HTMLImageElement> = []; //leeres Array um die umgedrehten Karten/ Rückseiten zu speichern
 let listPictruresAll: Array<HTMLImageElement> = []; //leeres Array um die Memory Bidler zu spreichern
 let dateTimeBegin: Date; //Variable um Startzeit zu speichern
 let dateTimeEnd: Date; //Variable um Endzeit zu speichern
@@ -37,30 +37,35 @@ for (let item of <HTMLCollectionOf<HTMLImageElement>> document.getElementsByClas
 //Funktion Memory Karten aufdecken,vergleichen und Start/Endzeit zu ermitteln
 function bildAufdecken(_event: Event): void {
     startTimeifClickZero(); //Aufrufen der Zeit starten Funktion
-   
-    let geklicktesBild: HTMLImageElement = <HTMLImageElement>_event.target; //Objekt welches geklickt wurde --> bekommmt Image
-   
-    if (listRueckClicked.length < 2) { //solange in der Liste der Rückseite noch keine 2 Bilder vorhanden sind
 
-        listRueckClicked.push(geklicktesBild); //Element in Liste  speichern
-        geklicktesBild.style.visibility = "hidden"; //Bild - Rückseite ausblenden
+    console.log("test");
+   
+    let clickedPicture: HTMLImageElement = <HTMLImageElement>_event.target; //Objekt welches geklickt wurde --> bekommmt Image
+   
+    if (listFrontClicked.length < 2) { //solange in der Liste der Rückseite noch keine 2 Bilder vorhanden sind
+
+        listFrontClicked.push(clickedPicture); //Element in Liste  speichern
+        clickedPicture.style.opacity = "100%"; //Bild - Rückseite ausblenden
     }
 
-    if (listRueckClicked.length == 2) { //wenn 2 Elemente in der Liste sind (geklickt sind)
+    if (listFrontClicked.length == 2) { //wenn 2 Elemente in der Liste sind (geklickt sind)
 
-        if (listPictruresAll[].src != listPictruresAll[].src) { //wenn Stelle 0 und 1 NICHT übereinstimmen  (URL nicht stimmen)    
+        if (listFrontClicked[0].src != listFrontClicked[1].src) { //wenn Stelle 0 und 1 NICHT übereinstimmen  (URL nicht stimmen)    
             //Timer um das umgedrehte "falsche" Bild anzuzeigen
-            setTimeout (bilderZudecken, 5000); //ruft die Funktion erst nach 5sec auf
+            setTimeout (bilderZudecken, 2000); //ruft die Funktion erst nach 5sec auf
+        }
+        else { //wenn die Bilder gleich sind
+            listFrontClicked = []; //Liste leeren
         }
     }       
 }
 
 //Funktion Bilder zudecken
 function bilderZudecken (): void {
-    listRueckClicked.forEach(element => { // wie eine for Schleife über die Liste mit Elementen drüber gehen 
-        element.style.visibility = "visible"; //dann geklicktes Element sichtbar machen bzw. richtiges Bild  
+    listFrontClicked.forEach(element => { // wie eine for Schleife über die Liste mit Elementen drüber gehen 
+        element.style.opacity = "0%"; //dann geklicktes Element sichtbar machen bzw. richtiges Bild  
     });  
-    listRueckClicked = []; //listRueck leeren um neuen Zug starten zu können
+    listFrontClicked = []; //listRueck leeren um neuen Zug starten zu können
     
 }
 

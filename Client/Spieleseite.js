@@ -1,10 +1,10 @@
 "use strict";
 //EventListener für die Memory Karten Rückseite
-let rueckseitenCollection = document.getElementsByClassName("Rueckseite"); //muss der Collection sagen das es Images sind
+let picturesCollection = document.getElementsByClassName("Bild"); //muss der Collection sagen das es Images sind
 for (let i = 0; i < 16; i++) { //soll auf alle 16 Karten den Listener anwenden
-    rueckseitenCollection[i].addEventListener("click", bildAufdecken); //Zugriff auf das einzelne Element der Rückseite und Anwendung von Listener
+    picturesCollection[i].addEventListener("click", bildAufdecken); //Zugriff auf das einzelne Element der Rückseite und Anwendung von Listener
 }
-let listRueckClicked = []; //leeres Array um die umgedrehten Karten/ Rückseiten zu speichern
+let listFrontClicked = []; //leeres Array um die umgedrehten Karten/ Rückseiten zu speichern
 let listPictruresAll = []; //leeres Array um die Memory Bidler zu spreichern
 let dateTimeBegin; //Variable um Startzeit zu speichern
 let dateTimeEnd; //Variable um Endzeit zu speichern
@@ -31,24 +31,28 @@ for (let item of document.getElementsByClassName("Bild")) { //collection der Vor
 //Funktion Memory Karten aufdecken,vergleichen und Start/Endzeit zu ermitteln
 function bildAufdecken(_event) {
     startTimeifClickZero(); //Aufrufen der Zeit starten Funktion
-    let geklicktesBild = _event.target; //Objekt welches geklickt wurde --> bekommmt Image
-    if (listRueckClicked.length < 2) { //solange in der Liste der Rückseite noch keine 2 Bilder vorhanden sind
-        listRueckClicked.push(geklicktesBild); //Element in Liste  speichern
-        geklicktesBild.style.visibility = "hidden"; //Bild - Rückseite ausblenden
+    console.log("test");
+    let clickedPicture = _event.target; //Objekt welches geklickt wurde --> bekommmt Image
+    if (listFrontClicked.length < 2) { //solange in der Liste der Rückseite noch keine 2 Bilder vorhanden sind
+        listFrontClicked.push(clickedPicture); //Element in Liste  speichern
+        clickedPicture.style.opacity = "100%"; //Bild - Rückseite ausblenden
     }
-    if (listRueckClicked.length == 2) { //wenn 2 Elemente in der Liste sind (geklickt sind)
-        if (listPictruresAll[].src != listPictruresAll[].src) { //wenn Stelle 0 und 1 NICHT übereinstimmen  (URL nicht stimmen)    
+    if (listFrontClicked.length == 2) { //wenn 2 Elemente in der Liste sind (geklickt sind)
+        if (listFrontClicked[0].src != listFrontClicked[1].src) { //wenn Stelle 0 und 1 NICHT übereinstimmen  (URL nicht stimmen)    
             //Timer um das umgedrehte "falsche" Bild anzuzeigen
-            setTimeout(bilderZudecken, 5000); //ruft die Funktion erst nach 5sec auf
+            setTimeout(bilderZudecken, 2000); //ruft die Funktion erst nach 5sec auf
+        }
+        else { //wenn die Bilder gleich sind
+            listFrontClicked = []; //Liste leeren
         }
     }
 }
 //Funktion Bilder zudecken
 function bilderZudecken() {
-    listRueckClicked.forEach(element => {
-        element.style.visibility = "visible"; //dann geklicktes Element sichtbar machen bzw. richtiges Bild  
+    listFrontClicked.forEach(element => {
+        element.style.opacity = "0%"; //dann geklicktes Element sichtbar machen bzw. richtiges Bild  
     });
-    listRueckClicked = []; //listRueck leeren um neuen Zug starten zu können
+    listFrontClicked = []; //listRueck leeren um neuen Zug starten zu können
 }
 //Funktion Zeit starten
 function startTimeifClickZero() {

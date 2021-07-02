@@ -140,9 +140,11 @@ video{
     border: none;  
 }
 
-.Rueckseite{
+.Bild{
     position: absolute;
+    opacity: 0%;
 }
+
 
 
 #KartenUmdrehen {
