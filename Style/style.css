@@ -86,17 +86,17 @@ div{
     
 
 }
-#Löschen{
+#Loeschen{
     background-image: url(../Images/Mülleimer.png);
     background-color: rgba(252, 4, 4, 0.623);
     background-size: 100%;
     height: 60px;
     width: 70px ;
-    float: right;
-   
+    float: right;  
     
 }
-#Bestätigung{
+
+#Abschicken{
     margin-top: 50px;
 }
 
