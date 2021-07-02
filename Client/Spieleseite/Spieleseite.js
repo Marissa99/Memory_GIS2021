@@ -13,21 +13,6 @@ let clicks = 0; //Variable der Cklicks
 for (let item of document.getElementsByClassName("Bild")) { //collection der Vorderseite durchgehen
     listPictruresAll.push(item); // jedes einzeln in Liste speichern
 }
-//Funktion Memory Karten aus DB auswählen und zufällig anordnen
-/*function memoryAnordnen() {
-    let daten: FormData = new FormData(document.forms[0]); //FormData Objekt generieren
-    //let url: RequestInfo = "https://gissose2021mr.herokuapp.com"; //Verknüpfung mit der herokuapp
-    let url: RequestInfo = "http://localhost:8100"; //um es lokas zu testen
-    url += "/datenVerschicken"; // Anhängen mit einem / daher oben keiner notwenig
-    //--> motzt wegen any nicht mehr
-    //tslint:disable-next-line
-    let  query: URLSearchParams = new URLSearchParams(<any> daten);
-    url = url + "?" + query.toString(); //Url in String umwandeln
-    let antwort: Response = await fetch (url);
-    let ausgabe: string = await antwort.json(ausgabe);
-
-    for()
-}*/
 //Funktion Memory Karten aufdecken,vergleichen und Start/Endzeit zu ermitteln
 function bildAufdecken(_event) {
     startTimeifClickZero(); //Aufrufen der Zeit starten Funktion
@@ -58,7 +43,7 @@ function bilderZudecken() {
 function startTimeifClickZero() {
     if (clicks == 0) { //um die Startzeit zu speichern
         dateTimeBegin = new Date();
-        console.log(dateTimeBegin.getTime);
+        console.log(dateTimeBegin.getTime());
     }
     clicks = clicks + 1; //hochzählen der Clicks
 }
