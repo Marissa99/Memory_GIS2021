@@ -32,7 +32,7 @@ async function handleRequest(_request: Http.IncomingMessage, _response: Http.Ser
     if (_request.url) {
         let url: Url.UrlWithParsedQuery = Url.parse(_request.url, true); //umwandlung query in assoziatives Array
         let pathname: string = <string>url.pathname; //pathname in string speichern
-        let highscore: HighscoreDaten = {};
+        let highscore: HighscoreDaten = {spielername: url.query.spielername + "", zeit: parseInt(url.query.zeit + "")}; //parseInt um in string zumzuwanden und "" zum erkennen
         let memoryKarte: MemoryKarten = {bild: url.query.bild + "", url: url.query.url + "" }; 
 
     
@@ -77,10 +77,17 @@ async function handleRequest(_request: Http.IncomingMessage, _response: Http.Ser
   
 
 //Funktion Highscore Daten auf Highscore Seite
-async function HighscoreDatenSpeichern(_url: string, _highscore: HighscoreDaten): Promise<string> {
+async function HighscoreDatenSpeichern(_url: string, _highscore: HighscoreDaten): Promise<HighscoreDaten> {
     let options: Mongo.MongoClientOptions = {useNewUrlParser: true, useUnifiedTopology: true};
     let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
     await mongoClient.connect();
+
+    let infos: Mongo.Collection = mongoClient.db("Memory").collection("Highscore"); //Collection Highscore verwenden
+    infos.insertOne (_highscore); //Element in Collection speichern
+    let ausgabe: string = "Hinzugefügt"; //Zur Überprüfung ob gespeichert wurde
+    return ausgabe;
+
+
 }
 
 //Funktion Bilder Löschen auf der Admin Seite
