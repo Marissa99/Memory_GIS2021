@@ -80,7 +80,6 @@ div{
     float: right;
     position: sticky;
     top: 0;
-    
     height: 2em;
     border-radius: 5px;
     
@@ -176,19 +175,50 @@ video{
 /* Für Tablett konzipiert*/
 @media screen and (max-width: 1024px) {
     body, img, video{
-        width: 90%;
+        width: 80%;
   
     }
 }
 
 /* Für Handy konzipiert*/
 @media screen  and (max-width: 600px){
-    body, header, img, video{
-        width: 30%;
+    body{
+        width: 100%;
     }
-    h1, h2,h3, h4{
+    table{
         width: 50%;
     }
+    h1, h2, h3{
+        font-size: 200%;
+    }
+    h4{
+        font-size: 90%;
+    }
+    #Start{
+        width: 50%;
+        margin-left: 10px;
+        margin-right: 60px;
+        font-size: smaller;
+    }
+    #Score{
+        width: 70%;
+        margin-left: 0px;
+        margin-right: 40px;
+        font-size: smaller;
+    }
+    #Admin{
+
+        width: 80%;
+        margin-left: 0px;
+        margin-right: 0px;
+        font-size: smaller;
+    
+    }
+    #BackStartseite{
+        font-size: smaller;
+        
+    }
+    
 }
    
 

@@ -1,11 +1,12 @@
 "use strict";
 //EventListener für die Memory Karten Rückseite
-let picturesCollection = document.getElementsByClassName("Bild"); //muss der Collection sagen das es Images sind
-for (let i = 0; i < 16; i++) { //soll auf alle 16 Karten den Listener anwenden
+/*let picturesCollection: HTMLCollectionOf<HTMLImageElement> = <HTMLCollectionOf<HTMLImageElement>> document.getElementsByClassName("Bild"); //muss der Collection sagen das es Images sind
+for (let i: number = 0; i < 16 ; i++) { //soll auf alle 16 Karten den Listener anwenden
     picturesCollection[i].addEventListener("click", pictureDiscover); //Zugriff auf das einzelne Element der Bilder und Anwendung von Listener
-}
+}*/
 let listFrontClicked = []; //leeres Array um die umgedrehten Karten/ Memory Bilder zu speichern
 let listPictruresAll = []; //leeres Array um alle Memory Bidler zu spreichern
+let listSelectedPictures = [];
 let dateTimeBegin; //Variable um Startzeit zu speichern
 let dateTimeEnd; //Variable um Endzeit zu speichern
 let pairs = 0; // Variable: Anzahl der Paare
@@ -25,12 +26,32 @@ async function initMemory() {
     let query = new URLSearchParams(daten);
     url = url + "?" + query.toString(); //Url in String umwandeln
     let antwort = await fetch(url);
-    console.log(antwort);
-    console.log(await antwort.text());
-    console.log(await antwort.json());
-    /* while() {
-         console.log();
-     }*/
+    let outputArray = [];
+    antwort.json().then(function (data) {
+        let it = 0;
+        while (it < antwort.json.length) {
+            outputArray.push(data[it]);
+            it++;
+        }
+    });
+    console.log(outputArray);
+    let count = 0;
+    while (count < 8) {
+        let randomNumber = Math.floor(Math.random() * (listPictruresAll.length + 1)); // Zufallszahl generieren mit Grenzen (max und 0) https://www.codegrepper.com/code-examples/javascript/random+number+generator+in+typescript 
+        let randomURl = listPictruresAll[randomNumber];
+        let check = false;
+        if (listSelectedPictures.length > 0) {
+            listSelectedPictures.forEach(element => {
+                if (element == randomURl) {
+                    check = true;
+                }
+            });
+        }
+        if (!check) {
+            listSelectedPictures.push(randomURl);
+            count++;
+        }
+    }
 } //Ende Funktion initMemory
 //Funktion Memory Karten aufdecken und vergleichen und Start/Endzeit Funktion aufrufen
 function pictureDiscover(_event) {

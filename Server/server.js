@@ -19,7 +19,7 @@ function serverStarten(_port) {
 //Funktion HandleRequest mit if Abfragen (welcher Pfadname) aufgerufen wird
 async function handleRequest(_request, _response) {
     console.log("Anfrage angekommen"); //Überprüfung ob Anfragen angekommen sind
-    _response.setHeader("content-type", "text/json; charset=utf-8"); //Eigenschaften von JSON
+    _response.setHeader("content-type", "application/json; charset=utf-8"); //Eigenschaften von JSON
     _response.setHeader("Access-Control-Allow-Origin", "*"); //Zugriffserlaubnis: * alle dürfen darauf zugreifen
     if (_request.url) {
         let url = Url.parse(_request.url, true); //umwandlung query in assoziatives Array

@@ -26,7 +26,7 @@ function serverStarten(_port: number | string): void {
 //Funktion HandleRequest mit if Abfragen (welcher Pfadname) aufgerufen wird
 async function handleRequest(_request: Http.IncomingMessage, _response: Http.ServerResponse): Promise <void> { 
     console.log("Anfrage angekommen"); //Überprüfung ob Anfragen angekommen sind
-    _response.setHeader("content-type", "text/json; charset=utf-8"); //Eigenschaften von JSON
+    _response.setHeader("content-type", "application/json; charset=utf-8"); //Eigenschaften von JSON
     _response.setHeader("Access-Control-Allow-Origin", "*"); //Zugriffserlaubnis: * alle dürfen darauf zugreifen
 
     if (_request.url) {
@@ -68,6 +68,7 @@ async function handleRequest(_request: Http.IncomingMessage, _response: Http.Ser
             _response.write(JSON.stringify(memoryKarten));
         }
     }
+
     _response.end();
 }// Ende Funktion Handle Request
 
