@@ -4,7 +4,7 @@ const Http = require("http");
 const Url = require("url");
 const Mongo = require("mongodb");
 //let urlDBLokal: string = "mongodb://localhost:27017"; //lokal testen
-let urlDB = "mongodb+srv://Testuser2:Test123@marissareiser-gis21.8i9as.mongodb.net/Memory?retryWrites=true&w=majority"; //richtige DB und Collection MemoryKarten verwenden
+let urlDB = "mongodb+srv://Testuser2:Test123@marissareiser-gis21.8i9as.mongodb.net/Memory?retryWrites=true&w=majority"; // neue Datenbank Memory
 let port = Number(process.env.PORT); //Port ist "Hafen" 
 if (!port)
     port = 8100; //Port wird auf 8100 gesetzt (localhost:8100)
@@ -16,25 +16,25 @@ function serverStarten(_port) {
     server.listen(_port);
     server.addListener("request", handleRequest);
 }
-//Funktion mit if Abfragen (welcher Pfadname) aufgerufen wird
+//Funktion HandleRequest mit if Abfragen (welcher Pfadname) aufgerufen wird
 async function handleRequest(_request, _response) {
-    console.log("Anfrage angekommen"); //Überprüfung ob Daten angekommen sind
-    _response.setHeader("content-type", "text/json; charset=utf-8"); //Eigenschaften von HTML
+    console.log("Anfrage angekommen"); //Überprüfung ob Anfragen angekommen sind
+    _response.setHeader("content-type", "text/json; charset=utf-8"); //Eigenschaften von JSON
     _response.setHeader("Access-Control-Allow-Origin", "*"); //Zugriffserlaubnis: * alle dürfen darauf zugreifen
     if (_request.url) {
         let url = Url.parse(_request.url, true); //umwandlung query in assoziatives Array
         let pathname = url.pathname; //pathname in string speichern
         let highscore = { spielername: url.query.spielername + "", zeit: parseInt(url.query.zeit + "") }; //parseInt um in string zumzuwanden und "" zum erkennen
-        let memoryKarte = { url: url.query.url + "" };
-        //Pfad um die ScoreDaten in DB zu speichern -->Button auf Spielergebnisseite (Bestätigen und senden)
-        //Pfad für die 10besten ScoreDaten anzeigen
+        let memoryKarte = { url: url.query.url + "" }; //Variable für MemoryKarten
+        //Pfad um Bilder aus Datenbank holen
         if (pathname == "/bilder") {
             let pictureData = await getPictures(urlDB);
             console.log(pictureData);
             _response.write(JSON.stringify(pictureData));
         }
+        //Pfad um die ScoreDaten in DB zu speichern -->Button auf Spielergebnisseite (Bestätigen und senden)
         else if (pathname == "/Abschicken") {
-            await HighscoreDatenSpeichern(urlDB, highscore);
+            await saveHighscoreData(urlDB, highscore);
         }
         //Pfad für die 10besten ScoreDaten anzeigen
         else if (pathname == "/") {
@@ -42,21 +42,20 @@ async function handleRequest(_request, _response) {
         }
         //Pfad wenn man ein Bild in die DB hinzufügen möchte
         else if (pathname == "/Hinzufuegen") {
-            let memoryKarten = await bilderHinzufuegen(urlDB, memoryKarte);
+            let memoryKarten = await addPictures(urlDB, memoryKarte);
             console.log(memoryKarten);
             _response.write(JSON.stringify(memoryKarten));
         }
         //Pfad wenn man ein Bild aus der DB löschen möchte
         else if (pathname == "/Loeschen") {
-            let memoryKarten = await bildLoeschen(urlDB);
+            let memoryKarten = await deletePictures(urlDB);
             console.log(memoryKarten);
             _response.write(JSON.stringify(memoryKarten));
         }
     }
-    console.log("send back");
     _response.end();
 } // Ende Funktion Handle Request
-//Funktion Bilder
+//Funktion Bilder aus Datenbank auslesen
 async function getPictures(_url) {
     let options = { useNewUrlParser: true, useUnifiedTopology: true };
     let mongoClient = new Mongo.MongoClient(_url, options);
@@ -68,8 +67,8 @@ async function getPictures(_url) {
     return result;
 }
 //Funktion Spielergebnis speichern auf Spieleseite
-//Funktion Highscore Daten auf Highscore Seite
-async function HighscoreDatenSpeichern(_url, _highscore) {
+//Funktion Highscore Daten auf Highscore Seite speichern
+async function saveHighscoreData(_url, _highscore) {
     let options = { useNewUrlParser: true, useUnifiedTopology: true };
     let mongoClient = new Mongo.MongoClient(_url, options);
     await mongoClient.connect();
@@ -77,7 +76,7 @@ async function HighscoreDatenSpeichern(_url, _highscore) {
     infos.insertOne(_highscore); //Element in Collection speichern
 }
 //Funktion Bilder Löschen auf der Admin Seite
-async function bildLoeschen(_url) {
+async function deletePictures(_url) {
     let options = { useNewUrlParser: true, useUnifiedTopology: true };
     let mongoClient = new Mongo.MongoClient(_url, options);
     await mongoClient.connect();
@@ -88,7 +87,7 @@ async function bildLoeschen(_url) {
     return result;
 }
 //Funktion Bilder Hinzufügen auf der Admin Seite
-async function bilderHinzufuegen(_url, _memoryKarte) {
+async function addPictures(_url, _memoryKarte) {
     let options = { useNewUrlParser: true, useUnifiedTopology: true };
     let mongoClient = new Mongo.MongoClient(_url, options);
     await mongoClient.connect();

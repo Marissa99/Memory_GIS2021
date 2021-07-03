@@ -6,13 +6,13 @@ import * as Mongo from "mongodb";
 
 
 //let urlDBLokal: string = "mongodb://localhost:27017"; //lokal testen
-let urlDB: string = "mongodb+srv://Testuser2:Test123@marissareiser-gis21.8i9as.mongodb.net/Memory?retryWrites=true&w=majority";  //richtige DB und Collection MemoryKarten verwenden
+let urlDB: string = "mongodb+srv://Testuser2:Test123@marissareiser-gis21.8i9as.mongodb.net/Memory?retryWrites=true&w=majority";  // neue Datenbank Memory
 
 let port: number = Number(process.env.PORT); //Port ist "Hafen" 
 if (!port)
      port = 8100; //Port wird auf 8100 gesetzt (localhost:8100)
 
-     
+    
 serverStarten(port); //Server auf diesem Port starten
 
 //Funktion Server starten
@@ -23,30 +23,28 @@ function serverStarten(_port: number | string): void {
     server.addListener("request", handleRequest);       
 }
 
-//Funktion mit if Abfragen (welcher Pfadname) aufgerufen wird
+//Funktion HandleRequest mit if Abfragen (welcher Pfadname) aufgerufen wird
 async function handleRequest(_request: Http.IncomingMessage, _response: Http.ServerResponse): Promise <void> { 
-    console.log("Anfrage angekommen"); //Überprüfung ob Daten angekommen sind
-    _response.setHeader("content-type", "text/json; charset=utf-8"); //Eigenschaften von HTML
+    console.log("Anfrage angekommen"); //Überprüfung ob Anfragen angekommen sind
+    _response.setHeader("content-type", "text/json; charset=utf-8"); //Eigenschaften von JSON
     _response.setHeader("Access-Control-Allow-Origin", "*"); //Zugriffserlaubnis: * alle dürfen darauf zugreifen
 
     if (_request.url) {
         let url: Url.UrlWithParsedQuery = Url.parse(_request.url, true); //umwandlung query in assoziatives Array
         let pathname: string = <string>url.pathname; //pathname in string speichern
         let highscore: HighscoreDaten = {spielername: url.query.spielername + "", zeit: parseInt(url.query.zeit + "")}; //parseInt um in string zumzuwanden und "" zum erkennen
-        let memoryKarte: MemoryKarten = {url: url.query.url + "" }; 
+        let memoryKarte: MemoryKarten = {url: url.query.url + "" }; //Variable für MemoryKarten
 
-    
-    
-        //Pfad um die ScoreDaten in DB zu speichern -->Button auf Spielergebnisseite (Bestätigen und senden)
-           //Pfad für die 10besten ScoreDaten anzeigen
+
+        //Pfad um Bilder aus Datenbank holen
         if (pathname == "/bilder") {
             let pictureData: MemoryKarten[] = await getPictures(urlDB);
             console.log(pictureData);
             _response.write(JSON.stringify(pictureData));
         }
-
+        //Pfad um die ScoreDaten in DB zu speichern -->Button auf Spielergebnisseite (Bestätigen und senden)
         else if (pathname == "/Abschicken") {
-            await HighscoreDatenSpeichern(urlDB, highscore);
+            await saveHighscoreData(urlDB, highscore);
 
         }
 
@@ -58,25 +56,24 @@ async function handleRequest(_request: Http.IncomingMessage, _response: Http.Ser
 
         //Pfad wenn man ein Bild in die DB hinzufügen möchte
         else if (pathname == "/Hinzufuegen") {
-            let memoryKarten: MemoryKarten [] = await bilderHinzufuegen (urlDB, memoryKarte);
+            let memoryKarten: MemoryKarten [] = await addPictures (urlDB, memoryKarte);
             console.log(memoryKarten);
             _response.write(JSON.stringify(memoryKarten));
         }   
 
-    //Pfad wenn man ein Bild aus der DB löschen möchte
+        //Pfad wenn man ein Bild aus der DB löschen möchte
         else if (pathname == "/Loeschen") {
-            let memoryKarten: MemoryKarten [] = await bildLoeschen (urlDB);
+            let memoryKarten: MemoryKarten [] = await deletePictures (urlDB);
             console.log(memoryKarten);
             _response.write(JSON.stringify(memoryKarten));
         }
     }
-    console.log("send back");
     _response.end();
 }// Ende Funktion Handle Request
 
 
 
-//Funktion Bilder
+//Funktion Bilder aus Datenbank auslesen
 async function getPictures(_url: string): Promise <MemoryKarten[]> {
     let options: Mongo.MongoClientOptions = {useNewUrlParser: true, useUnifiedTopology: true};
     let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
@@ -89,6 +86,7 @@ async function getPictures(_url: string): Promise <MemoryKarten[]> {
     return result;
 }
 
+
 //Funktion Spielergebnis speichern auf Spieleseite
 
 
@@ -96,8 +94,8 @@ async function getPictures(_url: string): Promise <MemoryKarten[]> {
 
   
 
-//Funktion Highscore Daten auf Highscore Seite
-async function HighscoreDatenSpeichern(_url: string, _highscore: HighscoreDaten): Promise<void> {
+//Funktion Highscore Daten auf Highscore Seite speichern
+async function saveHighscoreData(_url: string, _highscore: HighscoreDaten): Promise<void> {
     let options: Mongo.MongoClientOptions = {useNewUrlParser: true, useUnifiedTopology: true};
     let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
     await mongoClient.connect();
@@ -109,7 +107,7 @@ async function HighscoreDatenSpeichern(_url: string, _highscore: HighscoreDaten)
 }
 
 //Funktion Bilder Löschen auf der Admin Seite
-async function bildLoeschen (_url: string): Promise<MemoryKarten[]> {
+async function deletePictures (_url: string): Promise<MemoryKarten[]> {
     let options: Mongo.MongoClientOptions = {useNewUrlParser: true, useUnifiedTopology: true};
     let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
     await mongoClient.connect();
@@ -123,7 +121,7 @@ async function bildLoeschen (_url: string): Promise<MemoryKarten[]> {
 }
 
 //Funktion Bilder Hinzufügen auf der Admin Seite
-async function bilderHinzufuegen (_url: string, _memoryKarte: MemoryKarten): Promise<MemoryKarten[]> {
+async function addPictures (_url: string, _memoryKarte: MemoryKarten): Promise<MemoryKarten[]> {
     let options: Mongo.MongoClientOptions = {useNewUrlParser: true, useUnifiedTopology: true};
     let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
     await mongoClient.connect();

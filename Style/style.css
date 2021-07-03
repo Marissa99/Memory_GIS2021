@@ -102,7 +102,7 @@ div{
 
 table, tr, td, th{
     justify-content: center;
-    width: 950px;
+   
     
 }
 
@@ -130,8 +130,8 @@ video{
     margin-right: 50px;
 }
 .Memory img{
-    width: 200px ;
-    height: 200px;
+    width: 100px ;
+    height: 100px;
     object-fit: cover;
 }
 
