@@ -1,9 +1,9 @@
 "use strict";
 //EventListener für die Memory Karten Rückseite
-/*let picturesCollection: HTMLCollectionOf<HTMLImageElement> = <HTMLCollectionOf<HTMLImageElement>> document.getElementsByClassName("Bild"); //muss der Collection sagen das es Images sind
-for (let i: number = 0; i < 16 ; i++) { //soll auf alle 16 Karten den Listener anwenden
+let picturesCollection = document.getElementsByClassName("Bild"); //muss der Collection sagen das es Images sind
+for (let i = 0; i < 16; i++) { //soll auf alle 16 Karten den Listener anwenden
     picturesCollection[i].addEventListener("click", pictureDiscover); //Zugriff auf das einzelne Element der Bilder und Anwendung von Listener
-}*/
+}
 let listFrontClicked = []; //leeres Array um die umgedrehten Karten/ Memory Bilder zu speichern
 let listPictruresAll = []; //leeres Array um alle Memory Bidler zu spreichern
 let listSelectedPictures = [];
@@ -14,9 +14,9 @@ let clicks = 0; //Variable der Cklicks
 for (let item of document.getElementsByClassName("Bild")) { //collection der Vorderseite/ Memory Bilder durchgehen
     listPictruresAll.push(item); // jedes einzeln in Liste speichern
 }
-//Funktion Bilder aus DB holen und random anordnen
-initMemory();
-async function initMemory() {
+//Funktion Bilder aus DB holen und random Bild-Url's auszusuchen
+randomMemoryUrl();
+async function randomMemoryUrl() {
     let daten = new FormData(document.forms[0]); //FormData Objekt generieren
     //let url: RequestInfo = "https://gissose2021mr.herokuapp.com"; //Verknüpfung mit der herokuapp
     let url = "http://localhost:8100"; //um es lokas zu testen
@@ -26,19 +26,13 @@ async function initMemory() {
     let query = new URLSearchParams(daten);
     url = url + "?" + query.toString(); //Url in String umwandeln
     let antwort = await fetch(url);
-    let outputArray = [];
-    antwort.json().then(function (data) {
-        let it = 0;
-        while (it < antwort.json.length) {
-            outputArray.push(data[it]);
-            it++;
-        }
-    });
+    let outputArray = await antwort.json();
     console.log(outputArray);
+    //sucht mit 8 Url's aus der Liste aus
     let count = 0;
     while (count < 8) {
-        let randomNumber = Math.floor(Math.random() * (listPictruresAll.length + 1)); // Zufallszahl generieren mit Grenzen (max und 0) https://www.codegrepper.com/code-examples/javascript/random+number+generator+in+typescript 
-        let randomURl = listPictruresAll[randomNumber];
+        let randomNumber = Math.floor(Math.random() * (outputArray.length)); // Zufallszahl generieren mit Grenzen (max und 0) https://www.codegrepper.com/code-examples/javascript/random+number+generator+in+typescript 
+        let randomURl = outputArray[randomNumber].url; //Typ MemoryKarten mit Attribut Url
         let check = false;
         if (listSelectedPictures.length > 0) {
             listSelectedPictures.forEach(element => {
@@ -47,12 +41,21 @@ async function initMemory() {
                 }
             });
         }
-        if (!check) {
+        if (!check) { //Check ob Url schon vorhanden ist
             listSelectedPictures.push(randomURl);
             count++;
         }
     }
-} //Ende Funktion initMemory
+    //Verdoppelt die 8 Url's
+    listSelectedPictures.push(...listSelectedPictures); //Funktion push akzepiert Liste nur mit ... https://www.tutorialspoint.com/typescript/typescript_array_push.htm
+    //console.log(listSelectedPictures); 
+    arrangeMemory();
+} //Ende Funktion randomMemoryUrl
+//Funktion die 16 Url's zu mischen und auf die Tabelle anzuweden
+function arrangeMemory() {
+    listSelectedPictures.sort(() => .5 - Math.random());
+    console.log(listSelectedPictures);
+}
 //Funktion Memory Karten aufdecken und vergleichen und Start/Endzeit Funktion aufrufen
 function pictureDiscover(_event) {
     startTimeifClickZero(); //Aufrufen der Zeit starten Funktion
