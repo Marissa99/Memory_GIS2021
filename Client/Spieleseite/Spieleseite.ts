@@ -64,6 +64,11 @@ function arrangeMemory (): void {
     listSelectedPictures.sort( () => .5 - Math.random() );
     console.log(listSelectedPictures);
 
+    for(let i: number = 0; i < 16 ; i++) { //um alle 16 urls verteilen zu können
+        document.getElementsByClassName("Bild").src = "Night";
+    }
+    
+
 }
 
 
