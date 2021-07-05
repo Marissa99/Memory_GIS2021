@@ -60,14 +60,12 @@ async function randomMemoryUrl(): Promise <void> {
 
 //Funktion die 16 Url's zu mischen und auf die Tabelle anzuweden
 function arrangeMemory (): void {
-    listSelectedPictures.sort( () => .5 - Math.random() );
+    listSelectedPictures.sort( () => .5 - Math.random() ); //https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
     console.log(listSelectedPictures);
 
     for (let i: number = 0; i < 16 ; i++) { //um alle 16 urls verteilen zu können
-        picturesCollection[i].src = listSelectedPictures[i]; //PictrueCollection - placehilder Bilder durch die Urls der SelctedPictures ersetzen
+        picturesCollection[i].src = listSelectedPictures[i]; //PictrueCollection - placeholder Bilder durch die Urls der SelctedPictures ersetzen
     }
-    
-
 }
 
 
@@ -75,12 +73,11 @@ function arrangeMemory (): void {
 function pictureDiscover(_event: Event): void {
     startTimeifClickZero(); //Aufrufen der Zeit starten Funktion
     
-   
     let clickedPicture: HTMLImageElement = <HTMLImageElement>_event.target; //Objekt welches geklickt wurde --> bekommmt Image
    
     if (listFrontClicked.length < 2) { //solange in der Liste der Memory Bilder noch keine 2 Bilder vorhanden sind
         listFrontClicked.push(clickedPicture); //Element in Liste  speichern
-        clickedPicture.style.opacity = "100%"; //Rückseite einblenden
+        clickedPicture.style.opacity = "100%"; //Memory einblenden
     }
 
     if (listFrontClicked.length == 2) { //wenn 2 Elemente in der Liste sind (geklickt sind)
@@ -112,9 +109,9 @@ function startTimeifClickZero (): void {
     }
     clicks = clicks + 1; //hochzählen der Clicks
 }
-//Funktion Endzeit des Spieles
+//Funktion Endzeit des Spieles (Endzeit - Startzeit als Json übergeben)
 async function endTimeif8Pairs(): Promise <void> {
-    if (pairs == 8) {
+    if (pairs == 8) { //Wird in Funktion PictrueDiscover hochgezählt wenn eins gefunden wurde
         dateTimeEnd = new Date();
         let form: FormData = new FormData();
         form.append("begin", dateTimeBegin.getTime().toString());
@@ -128,9 +125,9 @@ async function endTimeif8Pairs(): Promise <void> {
         console.log(antwort);
     }
 }
+
 //Interface für MemoryKarten
 interface MemoryKarten {
     url: string;
 }
 
-//Funktion automatisches Wieterleitan auf die Spielergebnis Seite

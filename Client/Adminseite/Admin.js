@@ -12,6 +12,7 @@ async function clickRemovePicture() {
     url = url + "/entfernen" + "?" + query.toString();
     let response = await fetch(url);
     let ausgabe = await response.text();
+    console.log(ausgabe);
     //let serverA: HTMLElement = <HTMLElement>document.getElementById("datenbank");
     //serverA.innerHTML = ausgabe;
 }
