@@ -1,5 +1,4 @@
 
-
 //EventListener für die Memory Karten Rückseite
 let picturesCollection: HTMLCollectionOf<HTMLImageElement> = <HTMLCollectionOf<HTMLImageElement>> document.getElementsByClassName("Bild"); //muss der Collection sagen das es Images sind
 for (let i: number = 0; i < 16 ; i++) { //soll auf alle 16 Karten den Listener anwenden
@@ -11,7 +10,7 @@ let listPictruresAll: Array<HTMLImageElement> = []; //leeres Array um alle Memor
 let listSelectedPictures: Array<string> = [];
 let dateTimeBegin: Date; //Variable um Startzeit zu speichern
 let dateTimeEnd: Date; //Variable um Endzeit zu speichern
-let pairs: number = 0; // Variable: Anzahl der Paare
+let pairs: number = 7; // Variable: Anzahl der Paare
 let clicks: number = 0; //Variable der Cklicks
 
 
@@ -64,8 +63,8 @@ function arrangeMemory (): void {
     listSelectedPictures.sort( () => .5 - Math.random() );
     console.log(listSelectedPictures);
 
-    for(let i: number = 0; i < 16 ; i++) { //um alle 16 urls verteilen zu können
-        document.getElementsByClassName("Bild").src = "Night";
+    for (let i: number = 0; i < 16 ; i++) { //um alle 16 urls verteilen zu können
+        picturesCollection[i].src = listSelectedPictures[i]; //PictrueCollection - placehilder Bilder durch die Urls der SelctedPictures ersetzen
     }
     
 
@@ -75,6 +74,7 @@ function arrangeMemory (): void {
 //Funktion Memory Karten aufdecken und vergleichen und Start/Endzeit Funktion aufrufen
 function pictureDiscover(_event: Event): void {
     startTimeifClickZero(); //Aufrufen der Zeit starten Funktion
+    
    
     let clickedPicture: HTMLImageElement = <HTMLImageElement>_event.target; //Objekt welches geklickt wurde --> bekommmt Image
    
@@ -85,12 +85,14 @@ function pictureDiscover(_event: Event): void {
 
     if (listFrontClicked.length == 2) { //wenn 2 Elemente in der Liste sind (geklickt sind)
         if (listFrontClicked[0].src != listFrontClicked[1].src) { //wenn Stelle 0 und 1 NICHT übereinstimmen  (URL nicht stimmen)    
-            setTimeout (pictureCoverUp, 2000); //ruft die Funktion bilderZudecken erst nach 5sec auf
+            setTimeout (pictureCoverUp, 1000); //ruft die Funktion bilderZudecken erst nach 5sec auf
         }
         else { //wenn die Bilder gleich sind
+            pairs++; //Paare hochzählen wenn sie gleich sind, um stäter endzeit zu haben
             listFrontClicked = []; //Liste leeren
         }
-    }       
+    }  
+    endTimeif8Pairs();     
 }
 
 //Funktion Bilder zudecken
@@ -111,13 +113,20 @@ function startTimeifClickZero (): void {
     clicks = clicks + 1; //hochzählen der Clicks
 }
 //Funktion Endzeit des Spieles
-function endTimeif8Pairs(): void {
+async function endTimeif8Pairs(): Promise <void> {
     if (pairs == 8) {
         dateTimeEnd = new Date();
-        console.log();
-
+        let form: FormData = new FormData();
+        form.append("begin", dateTimeBegin.getTime().toString());
+        form.append("end", dateTimeEnd.getTime().toString());
+        let url: RequestInfo = "http://localhost:8100"; //um es lokas zu testen
+        url += "/score"; // Anhängen mit einem / daher oben keiner notwenig
+        //tslint:disable-next-line 
+        let  query: URLSearchParams = new URLSearchParams(<any> form);
+        url = url + "?" + query.toString(); //Url in String umwandeln
+        let antwort: Response = await fetch(url);
+        console.log(antwort);
     }
-
 }
 //Interface für MemoryKarten
 interface MemoryKarten {

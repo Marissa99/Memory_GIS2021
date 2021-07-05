@@ -15,6 +15,9 @@ if (!port)
     
 serverStarten(port); //Server auf diesem Port starten
 
+let playTime: number;
+
+
 //Funktion Server starten
 function serverStarten(_port: number | string): void {
     let server: Http.Server = Http.createServer(); //erstellen eines einfachen Servers
@@ -39,7 +42,6 @@ async function handleRequest(_request: Http.IncomingMessage, _response: Http.Ser
         //Pfad um Bilder aus Datenbank holen
         if (pathname == "/bilder") {
             let pictureData: MemoryKarten[] = await getPictures(urlDB);
-            console.log(pictureData);
             _response.write(JSON.stringify(pictureData));
         }
         //Pfad um die ScoreDaten in DB zu speichern -->Button auf Spielergebnisseite (Bestätigen und senden)
@@ -66,6 +68,16 @@ async function handleRequest(_request: Http.IncomingMessage, _response: Http.Ser
             let memoryKarten: MemoryKarten [] = await deletePictures (urlDB);
             console.log(memoryKarten);
             _response.write(JSON.stringify(memoryKarten));
+        }
+
+        else if (pathname == "/score") {
+            let url: Url.UrlWithParsedQuery = Url.parse(_request.url, true); //umwandlung query in assoziatives Array
+            playTime =  Number(url.query.end) - Number(url.query.begin); //string in zahl umwandeln, voneinander abziehen und speichern
+        }
+
+        else if (pathname == "/playTime") {
+            _response.write(JSON.stringify(playTime));
+            playTime = 0;
         }
     }
 

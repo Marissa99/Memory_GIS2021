@@ -9,7 +9,7 @@ let listPictruresAll = []; //leeres Array um alle Memory Bidler zu spreichern
 let listSelectedPictures = [];
 let dateTimeBegin; //Variable um Startzeit zu speichern
 let dateTimeEnd; //Variable um Endzeit zu speichern
-let pairs = 0; // Variable: Anzahl der Paare
+let pairs = 7; // Variable: Anzahl der Paare
 let clicks = 0; //Variable der Cklicks
 for (let item of document.getElementsByClassName("Bild")) { //collection der Vorderseite/ Memory Bilder durchgehen
     listPictruresAll.push(item); // jedes einzeln in Liste speichern
@@ -55,6 +55,9 @@ async function randomMemoryUrl() {
 function arrangeMemory() {
     listSelectedPictures.sort(() => .5 - Math.random());
     console.log(listSelectedPictures);
+    for (let i = 0; i < 16; i++) { //um alle 16 urls verteilen zu können
+        picturesCollection[i].src = listSelectedPictures[i]; //PictrueCollection - placehilder Bilder durch die Urls der SelctedPictures ersetzen
+    }
 }
 //Funktion Memory Karten aufdecken und vergleichen und Start/Endzeit Funktion aufrufen
 function pictureDiscover(_event) {
@@ -66,12 +69,14 @@ function pictureDiscover(_event) {
     }
     if (listFrontClicked.length == 2) { //wenn 2 Elemente in der Liste sind (geklickt sind)
         if (listFrontClicked[0].src != listFrontClicked[1].src) { //wenn Stelle 0 und 1 NICHT übereinstimmen  (URL nicht stimmen)    
-            setTimeout(pictureCoverUp, 2000); //ruft die Funktion bilderZudecken erst nach 5sec auf
+            setTimeout(pictureCoverUp, 1000); //ruft die Funktion bilderZudecken erst nach 5sec auf
         }
         else { //wenn die Bilder gleich sind
+            pairs++; //Paare hochzählen wenn sie gleich sind, um stäter endzeit zu haben
             listFrontClicked = []; //Liste leeren
         }
     }
+    endTimeif8Pairs();
 }
 //Funktion Bilder zudecken
 function pictureCoverUp() {
@@ -89,10 +94,19 @@ function startTimeifClickZero() {
     clicks = clicks + 1; //hochzählen der Clicks
 }
 //Funktion Endzeit des Spieles
-function endTimeif8Pairs() {
+async function endTimeif8Pairs() {
     if (pairs == 8) {
         dateTimeEnd = new Date();
-        console.log();
+        let form = new FormData();
+        form.append("begin", dateTimeBegin.getTime().toString());
+        form.append("end", dateTimeEnd.getTime().toString());
+        let url = "http://localhost:8100"; //um es lokas zu testen
+        url += "/score"; // Anhängen mit einem / daher oben keiner notwenig
+        //tslint:disable-next-line 
+        let query = new URLSearchParams(form);
+        url = url + "?" + query.toString(); //Url in String umwandeln
+        let antwort = await fetch(url);
+        console.log(antwort);
     }
 }
 //Funktion automatisches Wieterleitan auf die Spielergebnis Seite

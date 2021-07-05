@@ -9,6 +9,7 @@ let port = Number(process.env.PORT); //Port ist "Hafen"
 if (!port)
     port = 8100; //Port wird auf 8100 gesetzt (localhost:8100)
 serverStarten(port); //Server auf diesem Port starten
+let playTime;
 //Funktion Server starten
 function serverStarten(_port) {
     let server = Http.createServer(); //erstellen eines einfachen Servers
@@ -29,7 +30,6 @@ async function handleRequest(_request, _response) {
         //Pfad um Bilder aus Datenbank holen
         if (pathname == "/bilder") {
             let pictureData = await getPictures(urlDB);
-            console.log(pictureData);
             _response.write(JSON.stringify(pictureData));
         }
         //Pfad um die ScoreDaten in DB zu speichern -->Button auf Spielergebnisseite (Bestätigen und senden)
@@ -51,6 +51,14 @@ async function handleRequest(_request, _response) {
             let memoryKarten = await deletePictures(urlDB);
             console.log(memoryKarten);
             _response.write(JSON.stringify(memoryKarten));
+        }
+        else if (pathname == "/score") {
+            let url = Url.parse(_request.url, true); //umwandlung query in assoziatives Array
+            playTime = Number(url.query.end) - Number(url.query.begin); //string in zahl umwandeln, voneinander abziehen und speichern
+        }
+        else if (pathname == "/playTime") {
+            _response.write(JSON.stringify(playTime));
+            playTime = 0;
         }
     }
     _response.end();

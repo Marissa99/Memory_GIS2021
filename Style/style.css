@@ -77,14 +77,14 @@ div{
     background-color:lightpink;
     opacity: 90%;
     font-size: medium;
-    float: left;
     position: fixed;
     top: 0;
     height: 2em;
     border-radius: 5px;
-  
-    
-
+}
+#Spielzeit{
+    background-color: rgb(202, 197, 196);
+    padding: 10px;
 }
 #Loeschen{
     background-image: url(../Images/Mülleimer.png);
