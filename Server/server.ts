@@ -44,28 +44,34 @@ async function handleRequest(_request: Http.IncomingMessage, _response: Http.Ser
             let pictureData: MemoryKarten[] = await getPictures(urlDB);
             _response.write(JSON.stringify(pictureData));
         }
+
+         //Pfad um alle Bilder auf der AdminSeite anzuzeigen
+         else if (pathname == "/anzeigenBilder") {
+            let anzeigen: MemoryKarten[] = await getPictures(urlDB);  //ShowMemory ist gleih wie GetPictures????
+            _response.write(JSON.stringify(anzeigen));
+        }
+
         //Pfad um die ScoreDaten in DB zu speichern -->Button auf Spielergebnisseite (Bestätigen und senden)
-        else if (pathname == "/Abschicken") {
+        else if (pathname == "/abschicken") {
             await saveHighscoreData(urlDB, highscore);
 
         }
 
-        //Pfad für die 10besten ScoreDaten anzeigen
-        else if (pathname == "/") {
+         //Pfad für die 10besten ScoreDaten anzeigen
+         else if (pathname == "/anzeigenBilder") {
             console.log();
         }
-      
-
+       
         //Pfad wenn man ein Bild in die DB hinzufügen möchte
-        else if (pathname == "/Hinzufuegen") {
-            let memoryKarten: MemoryKarten [] = await addPictures (urlDB, memoryKarte);
-            console.log(memoryKarten);
+        else if (pathname == "/hinzufuegen") {
+            let memoryKarten: string = await addPictures (urlDB, memoryKarte);
+            console.log(memoryKarten); //Zur Kontrolle
             _response.write(JSON.stringify(memoryKarten));
         }   
 
         //Pfad wenn man ein Bild aus der DB löschen möchte
-        else if (pathname == "/Loeschen") {
-            let memoryKarten: MemoryKarten [] = await deletePictures (urlDB);
+        else if (pathname == "/loeschen") {
+            let memoryKarten: string = await deletePictures (urlDB);
             console.log(memoryKarten);
             _response.write(JSON.stringify(memoryKarten));
         }
@@ -98,7 +104,18 @@ async function getPictures(_url: string): Promise <MemoryKarten[]> {
     let result: MemoryKarten[] = await cursor.toArray(); //auslesen der kompletten DB
     return result;
 }
+/*
+//Funktion Bilder aus 
+async function showMemory(_url: string): Promise <MemoryKarten[]> {
+    let options: Mongo.MongoClientOptions = {useNewUrlParser: true, useUnifiedTopology: true};
+    let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
+    await mongoClient.connect();
 
+    let infos: Mongo.Collection = mongoClient.db("Memory").collection("MemoryKarten"); //Collection der MemoryKarten verwenden
+    let cursor: Mongo.Cursor = infos.find(); //Suche der gesamten DB aber spezielle ist auch möglich mit .find({name: "..."})
+    let result: MemoryKarten[] = await cursor.toArray(); //auslesen der kompletten DB
+    return result;   
+}*/
 
 //Funktion Spielergebnis speichern auf Spieleseite
 
@@ -115,12 +132,10 @@ async function saveHighscoreData(_url: string, _highscore: HighscoreDaten): Prom
 
     let infos: Mongo.Collection = mongoClient.db("Memory").collection("Highscore"); //Collection Highscore verwenden
     infos.insertOne (_highscore); //Element in Collection speichern
-
-
 }
 
 //Funktion Bilder Löschen auf der Admin Seite
-async function deletePictures (_url: string): Promise<MemoryKarten[]> {
+async function deletePictures (_url: string): Promise<string> {
     let options: Mongo.MongoClientOptions = {useNewUrlParser: true, useUnifiedTopology: true};
     let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
     await mongoClient.connect();
@@ -128,13 +143,11 @@ async function deletePictures (_url: string): Promise<MemoryKarten[]> {
     let infos: Mongo.Collection = mongoClient.db("Memory").collection("MemoryKarten"); //Collection der MemoryKarten verwenden
     infos.deleteOne ({url: _url}); //ein Element mit dem Namen löschen
 
-    let  cursor: Mongo.Cursor = infos.find(); //Suche der gesamten DB aber spezielle ist auch möglich mit .find({name: "..."})
-    let result: MemoryKarten[] = await cursor.toArray(); //auslesen der kompletten DB
-    return result;
+    return "Bild gelöscht";
 }
 
 //Funktion Bilder Hinzufügen auf der Admin Seite
-async function addPictures (_url: string, _memoryKarte: MemoryKarten): Promise<MemoryKarten[]> {
+async function addPictures (_url: string, _memoryKarte: MemoryKarten): Promise<string> {
     let options: Mongo.MongoClientOptions = {useNewUrlParser: true, useUnifiedTopology: true};
     let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
     await mongoClient.connect();
@@ -142,9 +155,7 @@ async function addPictures (_url: string, _memoryKarte: MemoryKarten): Promise<M
     let infos: Mongo.Collection = mongoClient.db("Memory").collection("MemoryKarten"); //Collection der MemoryKarten verwenden
     infos.insertOne(_memoryKarte); // ein Element hinzufügen und in DB speichern
 
-    let  cursor: Mongo.Cursor = infos.find(); //Suche der gesamten DB aber spezielle ist auch möglich mit .find({name: "..."})
-    let result: MemoryKarten[] = await cursor.toArray(); //auslesen der kompletten DB
-    return result;
+    return "Bild hinzugefügt";
 }
 
 

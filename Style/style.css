@@ -87,16 +87,28 @@ div{
     padding: 10px;
 }
 #Loeschen{
+    margin-bottom: 30px;
     background-image: url(../Images/Mülleimer.png);
     background-color: rgba(252, 4, 4, 0.623);
     background-size: 100%;
     height: 60px;
-    width: 70px ;
-    float: right;   
+    width: 70px;  
 }
+
 #Hinzufuegen{
     margin-bottom: 30px;
     background-color: rgb(179, 245, 179);
+    height: 60px;
+    width: 80px;  
+}
+#Anzeigen{
+    margin-bottom: 30px;
+    background-color:lightskyblue;
+    height: 60px;
+    width: 80px;  
+}
+form{
+    text-align: center;
 }
 
 #Abschicken{
@@ -106,8 +118,6 @@ div{
 
 table, tr, td, th{
     justify-content: center;
-   
-    
 }
 
 
@@ -136,7 +146,7 @@ video{
 .Memory img{
     width: 100px ;
     height: 100px;
-    object-fit: cover;
+    object-fit: cover;  /*behält die Seitenverhältnisse bei und schneidet das Bild nur auf die Größe zu, https://developer.mozilla.org/de/docs/Web/CSS/object-fit*/
 }
 
 .Memory table , th, td, tr{

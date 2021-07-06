@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adminseite</title>
+    <script src="../Client/Adminseite/Admin.js" defer></script>
+    <script src="../Server/server.js" defer></script>
     <link rel="stylesheet" href="../Style/style.css">
 </head>
 <header>
@@ -13,29 +15,27 @@
 
 <body>
     
-    <h2>Adminseite</h2>
+    <form>
+        <h2>Adminseite</h2>
    
-    <h4>Nehmen Sie hier Ihre Einstellungen vor</h4>
+        <h4>Nehmen Sie hier Ihre Einstellungen vor</h4>
+    
+    
+        <h5>Fügen Sie hier die Url eines neuen Bildes ein, um es in die Datenbank hinzuzufügen:</h5>  
+        <input type="text" name="Url"><button id="Hinzufuegen" type="button" > Bild hinzufügen </button>
+    
+        <h5>Fügen Sie hier die Url eines vorhanden Bildes ein, um es aus der Datenbank zu löschen:</h5>  
+        <input type="text" name="Url"><button id="Loeschen" type="button" >  </button>
+        
+    
+        <h5>Klicken Sie den folgenen Button um alle Bilder aus der Datenbank zu sehen: <button id="Anzeigen" type="button" > Bilder anzeigen</button></h5> 
+        
+    
+        <div id= "bilderDB"></div>
+    </form>
+    
 
-
-    <h5>Fügen Sie hier die Url eines neuen Bildes ein, um es der Datenbank hinzuzufügen:</h5>  
-    <input type="text" name="Url">
-    <button id="Hinzufuegen" type="button" >Bestätigen und Bild hinzufügen</button>
-
-    <h5>Hier sehen Sie alle Bilder die momentan in der Datenbank vorhanden sind:</h5>
-
-    <table class="Einstellungen">
-        <thead>
-        </thead>
-        <tbody>
-            <tr>
-                <td><img src="http://placehold.it/250x150" alt="" /></td>
-                <td> <p>Hier steht später die Url des Bildes</p></td>
-                <td><button id="Loeschen" type="button" ></button></td>
-            </tr>
-            <tr>
-        </tbody>
-    </table>
+    
   
     
 
