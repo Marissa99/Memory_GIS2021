@@ -124,6 +124,7 @@ form{
 
 table, tr, td, th{
     justify-content: center;
+
 }
 
 
@@ -135,8 +136,9 @@ table, tr, td, th{
     border: 1px solid black;
     border-collapse: collapse;
     padding: 10px 20px 10px 20px;
-    text-align: left;
-    
+    margin: auto;
+    text-align: center;
+   
 }
 
 thead{

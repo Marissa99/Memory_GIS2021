@@ -52,15 +52,16 @@ async function handleRequest(_request: Http.IncomingMessage, _response: Http.Ser
         }
 
         //Pfad um die ScoreDaten in DB zu speichern -->Button auf Spielergebnisseite (Bestätigen und senden)
-        else if (pathname == "/abschicken") {
-            await saveHighscoreData(urlDB, highscore);
-
+        else if (pathname == "/abschickenScore") {
+           await saveHighscoreData(urlDB, highscore);
+            
         }
 
-         //Pfad für die 10besten ScoreDaten anzeigen
-         else if (pathname == "/anzeigenBilder") {
-            console.log();
-        }
+         /*//Pfad für die 10besten ScoreDaten anzeigen
+         else if (pathname == "/anzeigenScore") {
+            let  anzeige: string = await showScore(urlDB);
+            _response.write(anzeige);
+        }*/
        
         //Pfad wenn man ein Bild in die DB hinzufügen möchte
         else if (pathname == "/hinzufuegen") {
@@ -104,23 +105,8 @@ async function getPictures(_url: string): Promise <MemoryKarten[]> {
     let result: MemoryKarten[] = await cursor.toArray(); //auslesen der kompletten DB
     return result;
 }
-/*
-//Funktion Bilder aus 
-async function showMemory(_url: string): Promise <MemoryKarten[]> {
-    let options: Mongo.MongoClientOptions = {useNewUrlParser: true, useUnifiedTopology: true};
-    let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
-    await mongoClient.connect();
 
-    let infos: Mongo.Collection = mongoClient.db("Memory").collection("MemoryKarten"); //Collection der MemoryKarten verwenden
-    let cursor: Mongo.Cursor = infos.find(); //Suche der gesamten DB aber spezielle ist auch möglich mit .find({name: "..."})
-    let result: MemoryKarten[] = await cursor.toArray(); //auslesen der kompletten DB
-    return result;   
-}*/
-
-//Funktion Spielergebnis speichern auf Spieleseite
-
-
-//Funktion Highscore Daten auf Highscore Seite speichern
+//Funktion Highscore Daten aus Spieleergebnisseite speichern
 async function saveHighscoreData(_url: string, _highscore: HighscoreDaten): Promise<void> {
     let options: Mongo.MongoClientOptions = {useNewUrlParser: true, useUnifiedTopology: true};
     let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
@@ -129,6 +115,18 @@ async function saveHighscoreData(_url: string, _highscore: HighscoreDaten): Prom
     let infos: Mongo.Collection = mongoClient.db("Memory").collection("Highscore"); //Collection Highscore verwenden
     infos.insertOne (_highscore); //Element in Collection speichern
 }
+/*
+//Funktion Highscore auf Highscoreseite anzeigen
+async function showScore(_url: string): Promise <void> {
+    let options: Mongo.MongoClientOptions = {useNewUrlParser: true, useUnifiedTopology: true};
+    let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
+    await mongoClient.connect();
+
+    let infos: Mongo.Collection = mongoClient.db("Memory").collection("Highscore"); //Collection Highscore verwenden
+    let cursor: Mongo.Cursor = infos.find(); //Suche der gesamten DB aber spezielle ist auch möglich mit .find({name: "..."})
+    let result: HighscoreDaten[] = await cursor.toArray(); //auslesen der kompletten DB
+    return result;   
+}*/
 
 //Funktion Bilder Löschen auf der Admin Seite
 async function deletePictures (_url: string): Promise<string> {
