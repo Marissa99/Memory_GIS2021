@@ -126,8 +126,5 @@ async function endTimeif8Pairs(): Promise <void> {
     }
 }
 
-//Interface für MemoryKarten
-interface MemoryKarten {
-    url: string;
-}
+
 

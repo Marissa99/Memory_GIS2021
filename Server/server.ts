@@ -47,7 +47,7 @@ async function handleRequest(_request: Http.IncomingMessage, _response: Http.Ser
 
          //Pfad um alle Bilder auf der AdminSeite anzuzeigen
          else if (pathname == "/anzeigenBilder") {
-            let anzeigen: MemoryKarten[] = await getPictures(urlDB);  //ShowMemory ist gleih wie GetPictures????
+            let anzeigen: MemoryKarten[] = await getPictures(urlDB);  //ShowMemory ist gleich wie GetPictures????
             _response.write(JSON.stringify(anzeigen));
         }
 
@@ -120,10 +120,6 @@ async function showMemory(_url: string): Promise <MemoryKarten[]> {
 //Funktion Spielergebnis speichern auf Spieleseite
 
 
-
-
-  
-
 //Funktion Highscore Daten auf Highscore Seite speichern
 async function saveHighscoreData(_url: string, _highscore: HighscoreDaten): Promise<void> {
     let options: Mongo.MongoClientOptions = {useNewUrlParser: true, useUnifiedTopology: true};
@@ -141,7 +137,7 @@ async function deletePictures (_url: string): Promise<string> {
     await mongoClient.connect();
 
     let infos: Mongo.Collection = mongoClient.db("Memory").collection("MemoryKarten"); //Collection der MemoryKarten verwenden
-    infos.deleteOne ({url: _url}); //ein Element mit dem Namen löschen
+    infos.deleteOne ({url: _url}); //ein Element mit dem Namen löschen (Auf Adminseite name= "url")
 
     return "Bild gelöscht";
 }

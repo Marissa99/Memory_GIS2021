@@ -34,7 +34,7 @@ async function handleRequest(_request, _response) {
         }
         //Pfad um alle Bilder auf der AdminSeite anzuzeigen
         else if (pathname == "/anzeigenBilder") {
-            let anzeigen = await getPictures(urlDB); //ShowMemory ist gleih wie GetPictures????
+            let anzeigen = await getPictures(urlDB); //ShowMemory ist gleich wie GetPictures????
             _response.write(JSON.stringify(anzeigen));
         }
         //Pfad um die ScoreDaten in DB zu speichern -->Button auf Spielergebnisseite (Bestätigen und senden)
@@ -106,7 +106,7 @@ async function deletePictures(_url) {
     let mongoClient = new Mongo.MongoClient(_url, options);
     await mongoClient.connect();
     let infos = mongoClient.db("Memory").collection("MemoryKarten"); //Collection der MemoryKarten verwenden
-    infos.deleteOne({ url: _url }); //ein Element mit dem Namen löschen
+    infos.deleteOne({ url: _url }); //ein Element mit dem Namen löschen (Auf Adminseite name= "url")
     return "Bild gelöscht";
 }
 //Funktion Bilder Hinzufügen auf der Admin Seite

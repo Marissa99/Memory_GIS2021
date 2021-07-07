@@ -42,7 +42,7 @@ async function showPictures() {
     let ausgabe = await response.json();
     console.log(ausgabe);
     let anzeigeDiv = document.getElementById("bilderDB");
-    anzeigeDiv.innerHTML = ""; // um es immer zu aktuelisieren muss es geleert werden
+    anzeigeDiv.innerHTML = ""; // um es immer zu aktualisieren muss es geleert werden
     for (let i = 0; i < ausgabe.length; i++) { //Array durchgehen und alle anzeigen
         let div = showMemory(ausgabe[i]); //Aufgruf der Funktion mit Übergabe der
         anzeigeDiv.appendChild(div);
