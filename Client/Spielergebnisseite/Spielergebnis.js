@@ -11,10 +11,10 @@ async function playtime() {
     let antwort = await fetch(url);
     playTimeScore = await antwort.json();
     playTimeScore = Math.floor(playTimeScore / 60); //um auf sec zu kommen durch 60 teilen, Math.floor rundet die Sekunden
-    ShowPlaytime();
+    showPlaytime();
 }
 //Funktion um Spieldauer auf der Seite anzuzeigen
-async function ShowPlaytime() {
+async function showPlaytime() {
     console.log("Show");
     document.getElementById("Spielzeit").innerHTML = playTimeScore.toString() + " Sekunden";
 }
