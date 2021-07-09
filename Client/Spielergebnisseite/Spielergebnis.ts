@@ -17,7 +17,6 @@ async function playtime(): Promise <void> {
 
 //Funktion um Spieldauer auf der Seite anzuzeigen
 async function showPlaytime(): Promise <void> {
-    console.log("Show");
     document.getElementById("Spielzeit").innerHTML = playTimeScore.toString() + " Sekunden";    
 }
 

@@ -5,6 +5,7 @@ import * as Mongo from "mongodb";
 
 
 
+
 //let urlDBLokal: string = "mongodb://localhost:27017"; //lokal testen
 let urlDB: string = "mongodb+srv://Testuser2:Test123@marissareiser-gis21.8i9as.mongodb.net/Memory?retryWrites=true&w=majority";  // neue Datenbank Memory
 
@@ -37,6 +38,7 @@ async function handleRequest(_request: Http.IncomingMessage, _response: Http.Ser
         let pathname: string = <string>url.pathname; //pathname in string speichern
         let highscore: HighscoreDaten = {spielername: url.query.spielername + "", zeit: parseInt(url.query.zeit + "")}; //parseInt um in string zumzuwanden und "" zum erkennen
         let memoryKarte: MemoryKarten = {url: url.query.url + "" }; //Variable für MemoryKarten
+        let toDelete: string | string [] = url.query.urlDelete + "";
 
 
         //Pfad um Bilder aus Datenbank holen
@@ -45,10 +47,35 @@ async function handleRequest(_request: Http.IncomingMessage, _response: Http.Ser
             _response.write(JSON.stringify(pictureData));
         }
 
-         //Pfad um alle Bilder auf der AdminSeite anzuzeigen
-         else if (pathname == "/anzeigenBilder") {
-            let anzeigen: MemoryKarten[] = await getPictures(urlDB);  //ShowMemory ist gleich wie GetPictures????
+        //Pfad um alle Bilder auf der AdminSeite anzuzeigen
+        else if (pathname == "/anzeigenBilder") {
+            let anzeigen: MemoryKarten[] = await getPictures(urlDB);  
             _response.write(JSON.stringify(anzeigen));
+        }
+
+        //Pfad um auf der Adminseite ein Bild in die DB hinzuzufügen
+        else if (pathname == "/hinzufuegen") {
+            let memoryKarten: string = await addPictures (urlDB, memoryKarte);
+            console.log(memoryKarten); //Zur Kontrolle
+            _response.write(JSON.stringify(memoryKarten));
+        }   
+
+        //Pfad um auf der Adminseite ein Bild aus der Datenbank zu löschen
+        else if (pathname == "/loeschen") {
+            let memoryKarten: string = await deletePictures (urlDB, toDelete);
+            _response.write(JSON.stringify(memoryKarten));
+        }
+
+        //Pfad 
+        else if (pathname == "/score") {
+            let url: Url.UrlWithParsedQuery = Url.parse(_request.url, true); //umwandlung query in assoziatives Array
+            playTime =  Number(url.query.end) - Number(url.query.begin); //string in zahl umwandeln, voneinander abziehen und speichern
+        }
+
+        //Pfad um auf Spieleergebnisseite die Zeit anzuzeigen
+        else if (pathname == "/playTime") {
+            _response.write(JSON.stringify(playTime));
+            playTime = 0; //für den nächsten Spieler wieder auf 0 setzen
         }
 
         //Pfad um die ScoreDaten in DB zu speichern -->Button auf Spielergebnisseite (Bestätigen und senden)
@@ -56,36 +83,16 @@ async function handleRequest(_request: Http.IncomingMessage, _response: Http.Ser
            await saveHighscoreData(urlDB, highscore);
             
         }
-
-        //Pfad für die 10besten ScoreDaten anzeigen
+        /*
+        //Pfad für die 10 besten ScoreDaten anzeigen
          else if (pathname == "/anzeigenScore") {
             let anzeige: string = await showScore();
             _response.write(anzeige);
-        }
+        }*/
        
-        //Pfad wenn man ein Bild in die DB hinzufügen möchte
-        else if (pathname == "/hinzufuegen") {
-            let memoryKarten: string = await addPictures (urlDB, memoryKarte);
-            console.log(memoryKarten); //Zur Kontrolle
-            _response.write(JSON.stringify(memoryKarten));
-        }   
+      
 
-        //Pfad wenn man ein Bild aus der DB löschen möchte
-        else if (pathname == "/loeschen") {
-            let memoryKarten: string = await deletePictures (urlDB);
-            console.log(memoryKarten);
-            _response.write(JSON.stringify(memoryKarten));
-        }
-
-        else if (pathname == "/score") {
-            let url: Url.UrlWithParsedQuery = Url.parse(_request.url, true); //umwandlung query in assoziatives Array
-            playTime =  Number(url.query.end) - Number(url.query.begin); //string in zahl umwandeln, voneinander abziehen und speichern
-        }
-
-        else if (pathname == "/playTime") {
-            _response.write(JSON.stringify(playTime));
-            playTime = 0;
-        }
+      
     }
 
     _response.end();
@@ -93,7 +100,7 @@ async function handleRequest(_request: Http.IncomingMessage, _response: Http.Ser
 
 
 
-//Funktion Bilder aus Datenbank auslesen
+//Funktion Bilder aus Datenbank auslesen/ holen
 async function getPictures(_url: string): Promise <MemoryKarten[]> {
     let options: Mongo.MongoClientOptions = {useNewUrlParser: true, useUnifiedTopology: true};
     let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
@@ -106,36 +113,15 @@ async function getPictures(_url: string): Promise <MemoryKarten[]> {
     return result;
 }
 
-//Funktion Highscore Daten aus Spieleergebnisseite speichern
-async function saveHighscoreData(_url: string, _highscore: HighscoreDaten): Promise<void> {
-    let options: Mongo.MongoClientOptions = {useNewUrlParser: true, useUnifiedTopology: true};
-    let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
-    await mongoClient.connect();
-
-    let infos: Mongo.Collection = mongoClient.db("Memory").collection("Highscore"); //Collection Highscore verwenden
-    infos.insertOne (_highscore); //Element in Collection speichern
-}
-
-//Funktion Highscore auf Highscoreseite anzeigen
-async function showScore(_url: string): Promise <HighscoreDaten> {
-    let options: Mongo.MongoClientOptions = {useNewUrlParser: true, useUnifiedTopology: true};
-    let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
-    await mongoClient.connect();
-
-    let infos: Mongo.Collection = mongoClient.db("Memory").collection("Highscore"); //Collection Highscore verwenden
-    let cursor: Mongo.Cursor = infos.find(); //Suche der gesamten DB aber spezielle ist auch möglich mit .find({name: "..."})
-    let result: HighscoreDaten[] = await cursor.toArray(); //auslesen der kompletten DB
-    return result;   
-}
-
 //Funktion Bilder Löschen auf der Admin Seite
-async function deletePictures (_url: string): Promise<string> {
+async function deletePictures (_url: string, _name: string | string[]): Promise<string> {
     let options: Mongo.MongoClientOptions = {useNewUrlParser: true, useUnifiedTopology: true};
     let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
     await mongoClient.connect();
 
     let infos: Mongo.Collection = mongoClient.db("Memory").collection("MemoryKarten"); //Collection der MemoryKarten verwenden
-    infos.deleteOne ({urlDelete: _url}); //ein Element mit dem Namen löschen (Auf Adminseite name= "urlDelete")
+    console.log(_name);
+    infos.deleteOne({urlDelete: _name }); //ein Element mit dem Namen löschen (Auf Adminseite name= "urlDelete")
 
     return "Bild gelöscht";
 }
@@ -151,7 +137,28 @@ async function addPictures (_url: string, _memoryKarte: MemoryKarten): Promise<s
 
     return "Bild hinzugefügt";
 }
+//Funktion Highscore Daten aus Spieleergebnisseite in DB speichern
+async function saveHighscoreData(_url: string, _highscore: HighscoreDaten): Promise<void> {
+    let options: Mongo.MongoClientOptions = {useNewUrlParser: true, useUnifiedTopology: true};
+    let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
+    await mongoClient.connect();
 
+    let infos: Mongo.Collection = mongoClient.db("Memory").collection("Highscore"); //Collection Highscore verwenden
+    infos.insertOne (_highscore); //Element in Collection speichern
+}
+/*
+//Funktion Highscore auf Highscoreseite anzeigen
+async function showScore(_url: string): Promise <HighscoreDaten> {
+    let options: Mongo.MongoClientOptions = {useNewUrlParser: true, useUnifiedTopology: true};
+    let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
+    await mongoClient.connect();
+
+    let infos: Mongo.Collection = mongoClient.db("Memory").collection("Highscore"); //Collection Highscore verwenden
+    let cursor: Mongo.Cursor = infos.find(); //Suche der gesamten DB aber spezielle ist auch möglich mit .find({name: "..."})
+    let result: HighscoreDaten[] = await cursor.toArray(); //auslesen der kompletten DB
+    return result;   
+}
+*/
 
 
 

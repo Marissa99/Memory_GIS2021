@@ -18,7 +18,7 @@ let buttonEnfernen = document.getElementById("Loeschen");
 buttonEnfernen.addEventListener("click", removePicture);
 //Funktion um Bild entfernen zu können
 async function removePicture() {
-    let form = new FormData(document.forms[0]);
+    let form = new FormData(document.forms[1]);
     let url = "http://localhost:8100";
     //let url: string = "https://gissose2021mr.herokuapp.com";
     //--> motzt wegen any nicht mehr

@@ -10,7 +10,7 @@ let listPictruresAll: Array<HTMLImageElement> = []; //leeres Array um alle Memor
 let listSelectedPictures: Array<string> = [];
 let dateTimeBegin: Date; //Variable um Startzeit zu speichern
 let dateTimeEnd: Date; //Variable um Endzeit zu speichern
-let pairs: number = 7; // Variable: Anzahl der Paare
+let pairs: number = 0; // Variable: Anzahl der Paare
 let clicks: number = 0; //Variable der Cklicks
 
 

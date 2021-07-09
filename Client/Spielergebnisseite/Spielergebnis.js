@@ -15,7 +15,6 @@ async function playtime() {
 }
 //Funktion um Spieldauer auf der Seite anzuzeigen
 async function showPlaytime() {
-    console.log("Show");
     document.getElementById("Spielzeit").innerHTML = playTimeScore.toString() + " Sekunden";
 }
 let buttonScoredaten = document.getElementById("Abschicken"); //Button machen auf DeinScore
