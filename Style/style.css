@@ -1,4 +1,5 @@
-
+/* konzipiert für Tablett 12.3 Zoll */
+/* Allgemeine Styles */
 body{
     background-color: rgb(240, 240, 240); 
     font-family: Arial, Helvetica, sans-serif;  
@@ -33,12 +34,31 @@ h4{
     font-size: 1.5em;
     text-align: center;
 }
+h5{
+    text-align: center;
+}
 
+form{
+    text-align: center;
+}
 
+#BackStartseite{
+    background-color:lightpink;
+    opacity: 90%;
+    font-size: medium;
+    position: fixed;
+    top: 0;
+    height: 2em;
+    border-radius: 5px;
+    text-align: left;
+
+}
+
+/* Startseite */
 #Start{
     position: center ;
     margin-left: 170px;
-    margin-right: 150px;
+    margin-right: 180px;
     background-color: rgb(171, 253, 171); 
     opacity: 80%;
     font-size: medium;
@@ -47,7 +67,7 @@ h4{
 #Score{
     position: center ;
     margin-left: 170px;
-    margin-right: 150px;
+    margin-right: 160px;
     background-color:lightsalmon;
     opacity: 80%;
     font-size: medium;
@@ -72,23 +92,12 @@ div{
     display: flex;
 }
 
-#BackStartseite{
-    background-color:lightpink;
-    opacity: 90%;
-    font-size: medium;
-    position: fixed;
-    top: 0;
-    height: 2em;
-    border-radius: 5px;
-    text-align: left;
 
-}
-#Spielzeit{
-    background-color: rgb(202, 197, 196);
-    padding: 10px;
-}
+
+/* Adminseite */
 #bilderDB{
     flex-direction: column;
+    text-align: center;
     width: 50%;
 }
 
@@ -113,8 +122,11 @@ div{
     height: 60px;
     width: 80px;  
 }
-form{
-    text-align: center;
+
+/* Spieleseite */
+#Spielzeit{
+    background-color: rgb(202, 197, 196);
+    padding: 10px;
 }
 
 #Abschicken{
@@ -122,35 +134,11 @@ form{
     background-color: rgb(179, 245, 179);
 }
 
-table, tr, td, th{
-    justify-content: center;
-
-}
-
-
 #PlaceholderDauer{
     float: right;
     padding-right: 20px;
 }
-.Highscore table , th, td, tr{
-    border: 1px solid black;
-    border-collapse: collapse;
-    padding: 10px 20px 10px 20px;
-    margin: auto;
-    text-align: center;
-   
-}
 
-thead{
-    font-weight: bold ;
-
-}
-video{
-    float: right;
-    width: 40%;
-    margin-top: 0px;
-    margin-right: 50px;
-}
 .Memory img{
     width: 100px ;
     height: 100px;
@@ -161,15 +149,13 @@ video{
     position: center;
     border: none;  
     text-align: center;
+    background-color: rgb(240, 240, 240);
 }
-
 
 .Bild{
     position: absolute;
     opacity: 0%;
 }
-
-
 
 #KartenUmdrehen {
     position: fixed;
@@ -179,7 +165,6 @@ video{
     margin-left: 1000px;
     margin-top: 0px;
     background-color:cornflowerblue;
-    
 }
 #Spieldauer {
     
@@ -189,24 +174,80 @@ video{
     margin-right: 50px;
     padding: 10px 10px 10px 10px; 
 }
-.Einstellungen tr {
-    width: 1000px;
+
+/* Spielergebnisseite */
+video{
+    float: right;
+    width: 40%;
+    margin-top: 0px;
+    margin-right: 50px;
+}
+#Abschicken{
+    margin-left: 250px;
+    padding: 10px;
+}
+
+
+/* Highscoreseite */
+
+#MemoryStarten{
+    background-color:rgb(176, 220, 248);
+    float: right;
+    padding: 10px;
+    margin-right: 20px;
     
 }
-form{
+
+.Highscore table , th, td, tr{
+    padding: 10px 30px 10px 30px;
     text-align: center;
+    margin: auto;
+}
+
+#Platz1{
+    background-color: rgba(111, 255, 195, 0.404);
+}
+#Platz2{
+    background-color: rgba(111, 255, 195, 0.267);
+}
+#Platz3{
+    background-color: rgba(111, 255, 195, 0.185);
+}
+thead{
+    font-weight: bold ;
+
 }
 
 
 
-
-
-/* Für Tablett konzipiert*/
-@media screen and (max-width: 1024px) {
-    body, img, video{
-        width: 80%;
+/* Für Desktop konzipiert*/
+@media screen and (min-width: 1024px) {
+    body{
+        width: 100%;
   
     }
+    img{
+        width: 20%;
+    }
+    video{
+        width: 50%;
+    }
+    #MemoryStarten{
+        font-size: x-large;
+    }
+    #Start{
+        margin-left: 250px;
+        margin-right: 360px;
+    }
+    
+    #Score{
+        position: center ;
+        margin-left: 170px;
+        margin-right: 330px;
+        background-color:lightsalmon;
+        opacity: 80%;
+        font-size: medium;
+    } 
 }
 
 /* Für Handy konzipiert*/
@@ -225,7 +266,7 @@ form{
     }
 
     h5{
-        font-size: 70%;
+        font-size: 60%;
        
     }
     #Start{
@@ -241,27 +282,31 @@ form{
         font-size: smaller;
     }
     #Admin{
-
         width: 80%;
         margin-left: 0px;
         margin-right: 0px;
         font-size: smaller;
-    
     }
+
     #BackStartseite{
         font-size: smaller;
-        
     }
+
     video{
+        margin-top: 30px;
         margin-bottom: 20px;
+        width: 80%;
     }
+
     #Spieldauer{
         font-size: small;
+    }
+    #Abschicken{
+        margin-left: 40px;
     }
 
     .Memory{
         size: 50%
-
     };
     
 }
