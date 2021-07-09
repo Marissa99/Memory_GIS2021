@@ -25,9 +25,10 @@ async function handleRequest(_request, _response) {
     if (_request.url) {
         let url = Url.parse(_request.url, true); //umwandlung query in assoziatives Array
         let pathname = url.pathname; //pathname in string speichern
-        let highscore = { spielername: url.query.spielername + "", zeit: parseInt(url.query.zeit + "") }; //parseInt um in string zumzuwanden und "" zum erkennen
+        //let highscore: HighscoreDaten = {spielername: url.query.spielername + "", zeit: parseInt(url.query.zeit + "")}; //parseInt um in string zumzuwanden und "" zum erkennen
         let memoryKarte = { url: url.query.url + "" }; //Variable für MemoryKarten
         let toDelete = url.query.urlDelete + ""; //Url aus meinem Inputfeld holen
+        let player = url.query.spielername + "";
         //Pfad um Bilder aus Datenbank holen
         if (pathname == "/bilder") {
             let pictureData = await getPictures(urlDB);
@@ -57,18 +58,17 @@ async function handleRequest(_request, _response) {
         //Pfad um auf Spieleergebnisseite die Zeit anzuzeigen
         else if (pathname == "/playTime") {
             _response.write(JSON.stringify(playTime));
-            playTime = 0; //für den nächsten Spieler wieder auf 0 setzen
         }
         //Pfad um die ScoreDaten in DB zu speichern -->Button auf Spielergebnisseite (Bestätigen und senden)
         else if (pathname == "/abschickenScore") {
-            await saveHighscoreData(urlDB, highscore);
+            console.log("abschicken Score");
+            console.log(await saveHighscoreData(urlDB, player));
         }
-        /*
         //Pfad für die 10 besten ScoreDaten anzeigen
-         else if (pathname == "/anzeigenScore") {
-            let anzeige: string = await showScore();
-            _response.write(anzeige);
-        }*/
+        else if (pathname == "/anzeigenScore") {
+            let anzeige = await showScore(urlDB);
+            _response.write(JSON.stringify(anzeige));
+        }
     }
     _response.end();
 } // Ende Funktion Handle Request
@@ -103,11 +103,22 @@ async function addPictures(_url, _memoryKarte) {
     return "Bild hinzugefügt";
 }
 //Funktion Highscore Daten aus Spieleergebnisseite in DB speichern
-async function saveHighscoreData(_url, _highscore) {
+async function saveHighscoreData(_url, _player) {
     let options = { useNewUrlParser: true, useUnifiedTopology: true };
     let mongoClient = new Mongo.MongoClient(_url, options);
     await mongoClient.connect();
     let infos = mongoClient.db("Memory").collection("Highscore"); //Collection Highscore verwenden
-    infos.insertOne(_highscore); //Element in Collection speichern
+    infos.insertOne({ spielername: _player, zeit: playTime }); //Element in Collection speichern mit den DB Elementen  
+    return "Score added";
+}
+//Funktion Highscore auf Highscoreseite anzeigen
+async function showScore(_url) {
+    let options = { useNewUrlParser: true, useUnifiedTopology: true };
+    let mongoClient = new Mongo.MongoClient(_url, options);
+    await mongoClient.connect();
+    let infos = mongoClient.db("Memory").collection("Highscore"); //Collection Highscore verwenden
+    let cursor = infos.find(); //Suche der gesamten DB aber spezielle ist auch möglich mit .find({name: "..."})
+    let result = await cursor.toArray(); //auslesen der kompletten DB
+    return result;
 }
 //# sourceMappingURL=server.js.map

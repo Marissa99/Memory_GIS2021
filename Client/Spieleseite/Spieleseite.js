@@ -9,7 +9,7 @@ let listPictruresAll = []; //leeres Array um alle Memory Bidler zu spreichern
 let listSelectedPictures = [];
 let dateTimeBegin; //Variable um Startzeit zu speichern
 let dateTimeEnd; //Variable um Endzeit zu speichern
-let pairs = 0; // Variable: Anzahl der Paare
+let pairs = 7; // Variable: Anzahl der Paare
 let clicks = 0; //Variable der Cklicks
 for (let item of document.getElementsByClassName("Bild")) { //collection der Vorderseite/ Memory Bilder durchgehen
     listPictruresAll.push(item); // jedes einzeln in Liste speichern

@@ -11,7 +11,7 @@ async function playtime(): Promise <void> {
     //tslint:disable-next-line 
     let antwort: Response = await fetch(url);
     playTimeScore = await antwort.json();
-    playTimeScore = Math.floor(playTimeScore / 60); //um auf sec zu kommen durch 60 teilen, Math.floor rundet die Sekunden
+    playTimeScore = Math.floor(playTimeScore / 1000); //um auf sec zu kommen durch 60 teilen, Math.floor rundet die Sekunden
     showPlaytime();
 }
 
@@ -35,8 +35,7 @@ async function saveDataScore(): Promise <void> {
     let query: URLSearchParams = new URLSearchParams(<any>form);
     url = url + "/abschickenScore" + "?" + query.toString();
     let response: Response = await fetch(url);
-    let ausgabe: string = await response.text();
-    console.log(ausgabe); 
+    console.log(await response.text()); 
 
 
 }

@@ -10,7 +10,7 @@ async function playtime() {
     //tslint:disable-next-line 
     let antwort = await fetch(url);
     playTimeScore = await antwort.json();
-    playTimeScore = Math.floor(playTimeScore / 60); //um auf sec zu kommen durch 60 teilen, Math.floor rundet die Sekunden
+    playTimeScore = Math.floor(playTimeScore / 1000); //um auf sec zu kommen durch 60 teilen, Math.floor rundet die Sekunden
     showPlaytime();
 }
 //Funktion um Spieldauer auf der Seite anzuzeigen
@@ -29,7 +29,6 @@ async function saveDataScore() {
     let query = new URLSearchParams(form);
     url = url + "/abschickenScore" + "?" + query.toString();
     let response = await fetch(url);
-    let ausgabe = await response.text();
-    console.log(ausgabe);
+    console.log(await response.text());
 }
 //# sourceMappingURL=Spielergebnis.js.map
