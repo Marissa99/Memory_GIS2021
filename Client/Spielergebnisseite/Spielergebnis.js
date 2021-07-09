@@ -18,5 +18,19 @@ async function showPlaytime() {
     console.log("Show");
     document.getElementById("Spielzeit").innerHTML = playTimeScore.toString() + " Sekunden";
 }
+let buttonScoredaten = document.getElementById("Abschicken"); //Button machen auf DeinScore
+buttonScoredaten.addEventListener("click", saveDataScore);
 //Speichern der Spielzeit und Name in DB
+async function saveDataScore() {
+    let form = new FormData(document.forms[0]);
+    let url = "http://localhost:8100";
+    //let url: string = "https://gissose2021mr.herokuapp.com";
+    //--> motzt wegen any nicht mehr
+    //tslint:disable-next-line 
+    let query = new URLSearchParams(form);
+    url = url + "/abschickenScore" + "?" + query.toString();
+    let response = await fetch(url);
+    let ausgabe = await response.text();
+    console.log(ausgabe);
+}
 //# sourceMappingURL=Spielergebnis.js.map

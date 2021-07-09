@@ -21,7 +21,7 @@ let buttonEnfernen: HTMLButtonElement = <HTMLButtonElement>document.getElementBy
 buttonEnfernen.addEventListener("click", removePicture);
 
 //Funktion um Bild entfernen zu können
-async function removePicture(): Promise<void> { //Id des Bildes eingeben um es zu löschen
+async function removePicture(): Promise<void> { 
     let form: FormData = new FormData(document.forms[0]);
     let url: string = "http://localhost:8100";
     //let url: string = "https://gissose2021mr.herokuapp.com";

@@ -41,11 +41,11 @@ async function handleRequest(_request, _response) {
         else if (pathname == "/abschickenScore") {
             await saveHighscoreData(urlDB, highscore);
         }
-        /*//Pfad für die 10besten ScoreDaten anzeigen
+        //Pfad für die 10besten ScoreDaten anzeigen
         else if (pathname == "/anzeigenScore") {
-           let  anzeige: string = await showScore(urlDB);
-           _response.write(anzeige);
-       }*/
+            let anzeige = await showScore();
+            _response.write(anzeige);
+        }
         //Pfad wenn man ein Bild in die DB hinzufügen möchte
         else if (pathname == "/hinzufuegen") {
             let memoryKarten = await addPictures(urlDB, memoryKarte);
@@ -88,25 +88,23 @@ async function saveHighscoreData(_url, _highscore) {
     let infos = mongoClient.db("Memory").collection("Highscore"); //Collection Highscore verwenden
     infos.insertOne(_highscore); //Element in Collection speichern
 }
-/*
 //Funktion Highscore auf Highscoreseite anzeigen
-async function showScore(_url: string): Promise <void> {
-    let options: Mongo.MongoClientOptions = {useNewUrlParser: true, useUnifiedTopology: true};
-    let mongoClient: Mongo.MongoClient = new Mongo.MongoClient(_url, options);
+async function showScore(_url) {
+    let options = { useNewUrlParser: true, useUnifiedTopology: true };
+    let mongoClient = new Mongo.MongoClient(_url, options);
     await mongoClient.connect();
-
-    let infos: Mongo.Collection = mongoClient.db("Memory").collection("Highscore"); //Collection Highscore verwenden
-    let cursor: Mongo.Cursor = infos.find(); //Suche der gesamten DB aber spezielle ist auch möglich mit .find({name: "..."})
-    let result: HighscoreDaten[] = await cursor.toArray(); //auslesen der kompletten DB
+    let infos = mongoClient.db("Memory").collection("Highscore"); //Collection Highscore verwenden
+    let cursor = infos.find(); //Suche der gesamten DB aber spezielle ist auch möglich mit .find({name: "..."})
+    let result = await cursor.toArray(); //auslesen der kompletten DB
     return result;
-}*/
+}
 //Funktion Bilder Löschen auf der Admin Seite
 async function deletePictures(_url) {
     let options = { useNewUrlParser: true, useUnifiedTopology: true };
     let mongoClient = new Mongo.MongoClient(_url, options);
     await mongoClient.connect();
     let infos = mongoClient.db("Memory").collection("MemoryKarten"); //Collection der MemoryKarten verwenden
-    infos.deleteOne({ url: _url }); //ein Element mit dem Namen löschen (Auf Adminseite name= "url")
+    infos.deleteOne({ urlDelete: _url }); //ein Element mit dem Namen löschen (Auf Adminseite name= "urlDelete")
     return "Bild gelöscht";
 }
 //Funktion Bilder Hinzufügen auf der Admin Seite
