@@ -38,7 +38,7 @@ async function handleRequest(_request: Http.IncomingMessage, _response: Http.Ser
         let pathname: string = <string>url.pathname; //pathname in string speichern
         let highscore: HighscoreDaten = {spielername: url.query.spielername + "", zeit: parseInt(url.query.zeit + "")}; //parseInt um in string zumzuwanden und "" zum erkennen
         let memoryKarte: MemoryKarten = {url: url.query.url + "" }; //Variable für MemoryKarten
-        let toDelete: string | string [] = url.query.urlDelete + "";
+        let toDelete: string | string [] = url.query.urlDelete + ""; //Url aus meinem Inputfeld holen
 
 
         //Pfad um Bilder aus Datenbank holen
@@ -121,7 +121,7 @@ async function deletePictures (_url: string, _name: string | string[]): Promise<
 
     let infos: Mongo.Collection = mongoClient.db("Memory").collection("MemoryKarten"); //Collection der MemoryKarten verwenden
     console.log(_name);
-    infos.deleteOne({urlDelete: _name }); //ein Element mit dem Namen löschen (Auf Adminseite name= "urlDelete")
+    infos.deleteOne({url: _name }); //ein Element mit dem Namen löschen (in DB heißt es url)
 
     return "Bild gelöscht";
 }

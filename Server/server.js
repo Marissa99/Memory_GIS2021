@@ -27,7 +27,7 @@ async function handleRequest(_request, _response) {
         let pathname = url.pathname; //pathname in string speichern
         let highscore = { spielername: url.query.spielername + "", zeit: parseInt(url.query.zeit + "") }; //parseInt um in string zumzuwanden und "" zum erkennen
         let memoryKarte = { url: url.query.url + "" }; //Variable für MemoryKarten
-        let toDelete = url.query.urlDelete + "";
+        let toDelete = url.query.urlDelete + ""; //Url aus meinem Inputfeld holen
         //Pfad um Bilder aus Datenbank holen
         if (pathname == "/bilder") {
             let pictureData = await getPictures(urlDB);
@@ -90,7 +90,7 @@ async function deletePictures(_url, _name) {
     await mongoClient.connect();
     let infos = mongoClient.db("Memory").collection("MemoryKarten"); //Collection der MemoryKarten verwenden
     console.log(_name);
-    infos.deleteOne({ urlDelete: _name }); //ein Element mit dem Namen löschen (Auf Adminseite name= "urlDelete")
+    infos.deleteOne({ url: _name }); //ein Element mit dem Namen löschen (in DB heißt es url)
     return "Bild gelöscht";
 }
 //Funktion Bilder Hinzufügen auf der Admin Seite

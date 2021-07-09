@@ -1,5 +1,5 @@
 //Funktion um die 10 Besten Score Daten anzuzeigen
-async function showScore(): Promise <void> {
+/*async function showScore(): Promise <void> {
     let form: FormData = new FormData(document.forms[0]);
     let url: string = "http://localhost:8100";
     //let url: string = "https://gissose2021mr.herokuapp.com";
@@ -17,7 +17,7 @@ async function showScore(): Promise <void> {
 
 
     
-}
+}*/
 
 //Interface für die HighscoreDaten
 interface HighscoreDaten {
