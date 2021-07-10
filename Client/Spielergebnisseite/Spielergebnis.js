@@ -20,7 +20,8 @@ async function showPlaytime() {
 let buttonScoredaten = document.getElementById("Abschicken"); //Button machen um es in DB hochzuspeichern
 buttonScoredaten.addEventListener("click", saveDataScore);
 //Speichern der Spielzeit und Name in DB
-async function saveDataScore() {
+async function saveDataScore(event) {
+    event.preventDefault();
     let form = new FormData(document.forms[0]);
     //let url: string = "http://localhost:8100";
     let url = "https://gissose2021mr.herokuapp.com";

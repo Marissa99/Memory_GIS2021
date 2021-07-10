@@ -26,7 +26,8 @@ let buttonScoredaten: HTMLButtonElement = <HTMLButtonElement> document.getElemen
 buttonScoredaten.addEventListener("click", saveDataScore );
 
 //Speichern der Spielzeit und Name in DB
-async function saveDataScore(): Promise <void> {
+async function saveDataScore(event: Event): Promise <void> {
+    event.preventDefault();
     let form: FormData = new FormData(document.forms[0]);
     //let url: string = "http://localhost:8100";
     let url: string = "https://gissose2021mr.herokuapp.com";
