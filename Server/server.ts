@@ -4,8 +4,6 @@ import * as Url from "url";
 import * as Mongo from "mongodb";
 
 
-
-
 //let urlDBLokal: string = "mongodb://localhost:27017"; //lokal testen
 let urlDB: string = "mongodb+srv://Testuser2:Test123@marissareiser-gis21.8i9as.mongodb.net/Memory?retryWrites=true&w=majority";  // neue Datenbank Memory
 
