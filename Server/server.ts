@@ -156,8 +156,6 @@ async function showScore(_url: string): Promise <HighscoreDaten[]> {
 }
 
 
-
-
 //Interface für MemoryKarten
 interface MemoryKarten {
     url: string;
