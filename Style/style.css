@@ -57,7 +57,7 @@ form{
 /* Startseite */
 #Start{
     position: center ;
-    margin-left: 170px;
+    margin-left: 150px;
     margin-right: 180px;
     background-color: rgb(171, 253, 171); 
     opacity: 80%;
@@ -223,7 +223,7 @@ thead{
 
 
 /* Für Desktop konzipiert*/
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 1500px) {
     body{
         width: 100%;
   

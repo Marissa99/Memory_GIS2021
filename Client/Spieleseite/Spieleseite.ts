@@ -116,7 +116,8 @@ async function endTimeif8Pairs(): Promise <void> {
         let form: FormData = new FormData();
         form.append("begin", dateTimeBegin.getTime().toString());
         form.append("end", dateTimeEnd.getTime().toString());
-        let url: RequestInfo = "http://localhost:8100"; //um es lokas zu testen
+        //let url: RequestInfo = "http://localhost:8100"; //um es lokas zu testen
+        let url: string = "https://gissose2021mr.herokuapp.com";
         url += "/score"; // Anhängen mit einem / daher oben keiner notwenig
         //tslint:disable-next-line 
         let  query: URLSearchParams = new URLSearchParams(<any> form);
