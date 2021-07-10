@@ -78,7 +78,7 @@ async function handleRequest(_request: Http.IncomingMessage, _response: Http.Ser
         //Pfad um die ScoreDaten in DB zu speichern -->Button auf Spielergebnisseite (Bestätigen und senden)
         else if (pathname == "/abschickenScore") {
             console.log("abschicken Score");
-            let response: string =  await saveHighscoreData(urlDB, player);
+            let response =  await getPictures(urlDB);
             console.log(response);
             _response.write(JSON.stringify(response));
             
