@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Http = require("http");
-const Url = require("url");
-const Mongo = require("mongodb");
+import { createServer } from "http";
+import { parse } from "url";
+import { MongoClient } from "mongodb";
 //let urlDBLokal: string = "mongodb://localhost:27017"; //lokal testen
 let urlDB = "mongodb+srv://Testuser2:Test123@marissareiser-gis21.8i9as.mongodb.net/Memory?retryWrites=true&w=majority"; // neue Datenbank Memory
 let port = Number(process.env.PORT); //Port ist "Hafen" 
@@ -12,7 +12,7 @@ serverStarten(port); //Server auf diesem Port starten
 let playTime;
 //Funktion Server starten
 function serverStarten(_port) {
-    let server = Http.createServer(); //erstellen eines einfachen Servers
+    let server = createServer(); //erstellen eines einfachen Servers
     console.log("Server gestartet");
     server.listen(_port);
     server.addListener("request", handleRequest);
@@ -23,7 +23,7 @@ async function handleRequest(_request, _response) {
     _response.setHeader("content-type", "application/json; charset=utf-8"); //Eigenschaften von JSON
     _response.setHeader("Access-Control-Allow-Origin", "*"); //Zugriffserlaubnis: * alle dürfen darauf zugreifen
     if (_request.url) {
-        let url = Url.parse(_request.url, true); //umwandlung query in assoziatives Array
+        let url = parse(_request.url, true); //umwandlung query in assoziatives Array
         let pathname = url.pathname; //pathname in string speichern
         let memoryKarte = { url: url.query.url + "" }; //Variable für MemoryKarten
         let toDelete = url.query.urlDelete + ""; //Url aus meinem Inputfeld holen
@@ -51,7 +51,7 @@ async function handleRequest(_request, _response) {
         }
         //Pfad 
         else if (pathname == "/score") {
-            let url = Url.parse(_request.url, true); //umwandlung query in assoziatives Array
+            let url = parse(_request.url, true); //umwandlung query in assoziatives Array
             playTime = Number(url.query.end) - Number(url.query.begin); //string in zahl umwandeln, voneinander abziehen und speichern
         }
         //Pfad um auf Spieleergebnisseite die Zeit anzuzeigen
@@ -74,7 +74,7 @@ async function handleRequest(_request, _response) {
 //Funktion Bilder aus Datenbank auslesen/ holen
 async function getPictures(_url) {
     let options = { useNewUrlParser: true, useUnifiedTopology: true };
-    let mongoClient = new Mongo.MongoClient(_url, options);
+    let mongoClient = new MongoClient(_url, options);
     await mongoClient.connect();
     console.log(_url);
     let infos = mongoClient.db("Memory").collection("MemoryKarten"); //Collection der MemoryKarten verwenden
@@ -85,7 +85,7 @@ async function getPictures(_url) {
 //Funktion Bilder Löschen auf der Admin Seite
 async function deletePictures(_url, _name) {
     let options = { useNewUrlParser: true, useUnifiedTopology: true };
-    let mongoClient = new Mongo.MongoClient(_url, options);
+    let mongoClient = new MongoClient(_url, options);
     await mongoClient.connect();
     let infos = mongoClient.db("Memory").collection("MemoryKarten"); //Collection der MemoryKarten verwenden
     console.log(_name);
@@ -95,7 +95,7 @@ async function deletePictures(_url, _name) {
 //Funktion Bilder Hinzufügen auf der Admin Seite
 async function addPictures(_url, _memoryKarte) {
     let options = { useNewUrlParser: true, useUnifiedTopology: true };
-    let mongoClient = new Mongo.MongoClient(_url, options);
+    let mongoClient = new MongoClient(_url, options);
     await mongoClient.connect();
     let infos = mongoClient.db("Memory").collection("MemoryKarten"); //Collection der MemoryKarten verwenden
     infos.insertOne(_memoryKarte); // ein Element hinzufügen und in DB speichern
@@ -104,7 +104,7 @@ async function addPictures(_url, _memoryKarte) {
 //Funktion Highscore Daten aus Spieleergebnisseite in DB speichern
 async function saveHighscoreData(_url, _player) {
     let options = { useNewUrlParser: true, useUnifiedTopology: true };
-    let mongoClient = new Mongo.MongoClient(_url, options);
+    let mongoClient = new MongoClient(_url, options);
     await mongoClient.connect();
     let infos = mongoClient.db("Memory").collection("Highscore"); //Collection Highscore verwenden
     infos.insertOne({ spielername: _player, zeit: playTime }); //Element in Collection speichern mit den DB Elementen  
@@ -113,7 +113,7 @@ async function saveHighscoreData(_url, _player) {
 //Funktion Highscore auf Highscoreseite anzeigen
 async function showScore(_url) {
     let options = { useNewUrlParser: true, useUnifiedTopology: true };
-    let mongoClient = new Mongo.MongoClient(_url, options);
+    let mongoClient = new MongoClient(_url, options);
     await mongoClient.connect();
     let infos = mongoClient.db("Memory").collection("Highscore"); //Collection Highscore verwenden
     let cursor = infos.find(); //Suche der gesamten DB aber spezielle ist auch möglich mit .find({name: "..."})

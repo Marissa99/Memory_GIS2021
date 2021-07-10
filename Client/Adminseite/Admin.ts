@@ -3,7 +3,7 @@ buttonHinzufuegen.addEventListener("click", addPicture);
 
 //Funktion um Bild hinzufügen zu können 
 async function addPicture(): Promise<void> {
-    let form: FormData = new FormData(document.forms[0]);
+    let form: FormData = new FormData(document.forms[0]); //Verwendung des 0 (ersten) <form>
     //let url: string = "http://localhost:8100";
     let url: string = "https://gissose2021mr.herokuapp.com";
     //--> motzt wegen any nicht mehr
@@ -22,7 +22,7 @@ buttonEnfernen.addEventListener("click", removePicture);
 
 //Funktion um Bild entfernen zu können
 async function removePicture(): Promise<void> { 
-    let form: FormData = new FormData(document.forms[1]);
+    let form: FormData = new FormData(document.forms[1]); //Tipp von Lilli zwei unterschiedliche <form> auf Adminseite verwenden um getrennt darauf zugreifen zu können
     //let url: string = "http://localhost:8100";
     let url: string = "https://gissose2021mr.herokuapp.com";
     //--> motzt wegen any nicht mehr

@@ -20,7 +20,7 @@ async function showScore(): Promise <void> {
 
     for (let i: number = 0; i < 10; i++) { //Array durchgehen und 10 besten anzeigen
         nameCollection[i].innerText = "Name: " + ausgabe[i].spielername;
-        timeCollection[i].innerText = "Dauer: " + (ausgabe[i].zeit).toString() + " Sekunden";
+        timeCollection[i].innerText = "Dauer: " + (ausgabe[i].zeit / 1000).toString() + " Sekunden";
     }    
 }
 
