@@ -22,8 +22,8 @@ for (let item of <HTMLCollectionOf<HTMLImageElement>> document.getElementsByClas
 randomMemoryUrl(); 
 async function randomMemoryUrl(): Promise <void> {
     let daten: FormData = new FormData(document.forms[0]); //FormData Objekt generieren
-    //let url: RequestInfo = "https://gissose2021mr.herokuapp.com"; //Verknüpfung mit der herokuapp
-    let url: RequestInfo = "http://localhost:8100"; //um es lokas zu testen
+    let url: RequestInfo = "https://gissose2021mr.herokuapp.com"; //Verknüpfung mit der herokuapp
+    //let url: RequestInfo = "http://localhost:8100"; //um es lokas zu testen
     url += "/bilder"; // Anhängen mit einem / daher oben keiner notwenig
     //--> motzt wegen any nicht mehr
     //tslint:disable-next-line 
@@ -116,8 +116,8 @@ async function endTimeif8Pairs(): Promise <void> {
         let form: FormData = new FormData();
         form.append("begin", dateTimeBegin.getTime().toString()); //Anfangszeit anhängen
         form.append("end", dateTimeEnd.getTime().toString()); //Endzeit anhängen
-        let url: RequestInfo = "http://localhost:8100"; //um es lokas zu testen
-        //let url: string = "https://gissose2021mr.herokuapp.com";
+        //let url: RequestInfo = "http://localhost:8100"; //um es lokas zu testen
+        let url: string = "https://gissose2021mr.herokuapp.com";
         url += "/score"; // Anhängen mit einem / daher oben keiner notwenig
         //tslint:disable-next-line 
         let  query: URLSearchParams = new URLSearchParams(<any> form);
