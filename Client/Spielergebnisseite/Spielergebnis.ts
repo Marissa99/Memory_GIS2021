@@ -26,14 +26,14 @@ let buttonScoredaten: HTMLButtonElement = <HTMLButtonElement> document.getElemen
 buttonScoredaten.addEventListener("click", saveDataScore );
 
 //Speichern der Spielzeit und Name in DB
-async function saveDataScore(): Promise <void> {
+async function saveDataScore(): Promise <void> { //konnt nicht mit einer form gearbeitet werden, da es immer eine CORS Fehler gab
     //let url: string = "http://localhost:8100";
     let url: string = "https://gissose2021mr.herokuapp.com";
-    let spielername: string = (<HTMLInputElement> document.getElementById("Name")).value;
+    let spielername: string = (<HTMLInputElement> document.getElementById("Name")).value; //https://stackoverflow.com/questions/12989741/the-property-value-does-not-exist-on-value-of-type-htmlelement
     console.log(spielername);
-    let response: Response = await fetch(url + "/abschickenScore?spielername=" + spielername);
+    let response: Response = await fetch(url + "/abschickenScore?spielername=" + spielername); //Spielername kommt aus dem Input Feld
     console.log(await response.text());
-    window.location.href = "../HTML/Score.html";
+    window.location.href = "../HTML/Score.html"; //Automatische Weitereitung https://stackoverflow.com/questions/7077770/window-location-href-and-window-open-methods-in-javascript
 }
 
 
