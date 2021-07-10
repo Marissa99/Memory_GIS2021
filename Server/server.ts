@@ -36,7 +36,6 @@ async function handleRequest(_request: Http.IncomingMessage, _response: Http.Ser
     if (_request.url) {
         let url: Url.UrlWithParsedQuery = Url.parse(_request.url, true); //umwandlung query in assoziatives Array
         let pathname: string = <string>url.pathname; //pathname in string speichern
-        //let highscore: HighscoreDaten = {spielername: url.query.spielername + "", zeit: parseInt(url.query.zeit + "")}; //parseInt um in string zumzuwanden und "" zum erkennen
         let memoryKarte: MemoryKarten = {url: url.query.url + "" }; //Variable für MemoryKarten
         let toDelete: string | string [] = url.query.urlDelete + ""; //Url aus meinem Inputfeld holen
         let player: string | string [] = url.query.spielername + "";
@@ -141,7 +140,7 @@ async function saveHighscoreData(_url: string, _player: string | string[]): Prom
 
     let infos: Mongo.Collection = mongoClient.db("Memory").collection("Highscore"); //Collection Highscore verwenden
     infos.insertOne ( { spielername: _player, zeit: playTime } ); //Element in Collection speichern mit den DB Elementen  
-    return "Score added";
+    return "Score hinzugefügt";
 }
 
 //Funktion Highscore auf Highscoreseite anzeigen

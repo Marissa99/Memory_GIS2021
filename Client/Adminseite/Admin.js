@@ -1,11 +1,11 @@
 "use strict";
-let buttonHinzufuegen = document.getElementById("Hinzufuegen");
+let buttonHinzufuegen = document.getElementById("Hinzufuegen"); //Button mit EventListener
 buttonHinzufuegen.addEventListener("click", addPicture);
 //Funktion um Bild hinzufügen zu können 
 async function addPicture() {
     let form = new FormData(document.forms[0]);
-    let url = "http://localhost:8100";
-    //let url: string = "https://gissose2021mr.herokuapp.com";
+    //let url: string = "http://localhost:8100";
+    let url = "https://gissose2021mr.herokuapp.com";
     //--> motzt wegen any nicht mehr
     //tslint:disable-next-line 
     let query = new URLSearchParams(form);
@@ -19,8 +19,8 @@ buttonEnfernen.addEventListener("click", removePicture);
 //Funktion um Bild entfernen zu können
 async function removePicture() {
     let form = new FormData(document.forms[1]);
-    let url = "http://localhost:8100";
-    //let url: string = "https://gissose2021mr.herokuapp.com";
+    //let url: string = "http://localhost:8100";
+    let url = "https://gissose2021mr.herokuapp.com";
     //--> motzt wegen any nicht mehr
     //tslint:disable-next-line 
     let query = new URLSearchParams(form);
@@ -33,8 +33,8 @@ let divAnzeigen = document.getElementById("bilderDB");
 divAnzeigen.addEventListener("click", showPictures);
 //Funktion Alle Bilder auf der Admin Seite anzeigen
 async function showPictures() {
-    let url = "http://localhost:8100";
-    //let url: string = "https://gissose2021mr.herokuapp.com";
+    //let url: string = "http://localhost:8100";
+    let url = "https://gissose2021mr.herokuapp.com";
     //--> motzt wegen any nicht mehr
     //tslint:disable-next-line 
     url += "/anzeigenBilder";

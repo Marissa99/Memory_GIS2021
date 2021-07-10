@@ -1,11 +1,11 @@
-let buttonHinzufuegen: HTMLButtonElement = <HTMLButtonElement>document.getElementById("Hinzufuegen");
+let buttonHinzufuegen: HTMLButtonElement = <HTMLButtonElement>document.getElementById("Hinzufuegen"); //Button mit EventListener
 buttonHinzufuegen.addEventListener("click", addPicture);
 
 //Funktion um Bild hinzufügen zu können 
 async function addPicture(): Promise<void> {
     let form: FormData = new FormData(document.forms[0]);
-    let url: string = "http://localhost:8100";
-    //let url: string = "https://gissose2021mr.herokuapp.com";
+    //let url: string = "http://localhost:8100";
+    let url: string = "https://gissose2021mr.herokuapp.com";
     //--> motzt wegen any nicht mehr
     //tslint:disable-next-line 
     let query: URLSearchParams = new URLSearchParams(<any>form);
@@ -23,8 +23,8 @@ buttonEnfernen.addEventListener("click", removePicture);
 //Funktion um Bild entfernen zu können
 async function removePicture(): Promise<void> { 
     let form: FormData = new FormData(document.forms[1]);
-    let url: string = "http://localhost:8100";
-    //let url: string = "https://gissose2021mr.herokuapp.com";
+    //let url: string = "http://localhost:8100";
+    let url: string = "https://gissose2021mr.herokuapp.com";
     //--> motzt wegen any nicht mehr
     //tslint:disable-next-line 
     let query: URLSearchParams = new URLSearchParams(<any>form);
@@ -40,8 +40,8 @@ divAnzeigen.addEventListener("click", showPictures);
 
 //Funktion Alle Bilder auf der Admin Seite anzeigen
 async function showPictures(): Promise <void> {
-    let url: string = "http://localhost:8100";
-    //let url: string = "https://gissose2021mr.herokuapp.com";
+    //let url: string = "http://localhost:8100";
+    let url: string = "https://gissose2021mr.herokuapp.com";
     //--> motzt wegen any nicht mehr
     //tslint:disable-next-line 
     url += "/anzeigenBilder";

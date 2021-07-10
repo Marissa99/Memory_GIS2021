@@ -97,8 +97,10 @@ div{
 /* Adminseite */
 #bilderDB{
     flex-direction: column;
+    margin: auto;
     text-align: center;
     width: 50%;
+    height: 50%;
 }
 
 #Loeschen{
@@ -307,8 +309,11 @@ thead{
 
     .Memory{
         size: 50%
-    };
-    
+    }
+    #bilderDB div{
+        width: 100%;
+    }
+
 }
    
 

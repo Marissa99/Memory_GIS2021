@@ -25,7 +25,6 @@ async function handleRequest(_request, _response) {
     if (_request.url) {
         let url = Url.parse(_request.url, true); //umwandlung query in assoziatives Array
         let pathname = url.pathname; //pathname in string speichern
-        //let highscore: HighscoreDaten = {spielername: url.query.spielername + "", zeit: parseInt(url.query.zeit + "")}; //parseInt um in string zumzuwanden und "" zum erkennen
         let memoryKarte = { url: url.query.url + "" }; //Variable für MemoryKarten
         let toDelete = url.query.urlDelete + ""; //Url aus meinem Inputfeld holen
         let player = url.query.spielername + "";
@@ -109,7 +108,7 @@ async function saveHighscoreData(_url, _player) {
     await mongoClient.connect();
     let infos = mongoClient.db("Memory").collection("Highscore"); //Collection Highscore verwenden
     infos.insertOne({ spielername: _player, zeit: playTime }); //Element in Collection speichern mit den DB Elementen  
-    return "Score added";
+    return "Score hinzugefügt";
 }
 //Funktion Highscore auf Highscoreseite anzeigen
 async function showScore(_url) {
