@@ -11,18 +11,18 @@ async function playtime(): Promise <void> {
     //tslint:disable-next-line 
     let antwort: Response = await fetch(url);
     playTimeScore = await antwort.json();
-    playTimeScore = Math.floor(playTimeScore / 1000); //um auf sec zu kommen durch 60 teilen, Math.floor rundet die Sekunden
+    playTimeScore = Math.floor(playTimeScore / 1000); //um auf sec zu kommen durch 1000 teilen, Math.floor rundet die Sekunden
     showPlaytime();
 }
 
 //Funktion um Spieldauer auf der Seite anzuzeigen
 async function showPlaytime(): Promise <void> {
-    document.getElementById("Spielzeit").innerHTML = playTimeScore.toString() + " Sekunden";    
+    document.getElementById("Spielzeit").innerHTML = playTimeScore.toString() + " Sekunden";  //Anzeige auf der HTML Seite  
 }
 
 
 
-let buttonScoredaten: HTMLButtonElement = <HTMLButtonElement> document.getElementById("Abschicken"); //Button machen auf DeinScore
+let buttonScoredaten: HTMLButtonElement = <HTMLButtonElement> document.getElementById("Abschicken"); //Button machen um es in DB hochzuspeichern
 buttonScoredaten.addEventListener("click", saveDataScore );
 
 //Speichern der Spielzeit und Name in DB

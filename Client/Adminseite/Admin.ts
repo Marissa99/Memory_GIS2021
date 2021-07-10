@@ -35,7 +35,7 @@ async function removePicture(): Promise<void> {
 }
 
 
-let divAnzeigen: HTMLDivElement = <HTMLDivElement>document.getElementById("bilderDB");
+let divAnzeigen: HTMLDivElement = <HTMLDivElement>document.getElementById("bilderDB"); 
 divAnzeigen.addEventListener("click", showPictures);
 
 //Funktion Alle Bilder auf der Admin Seite anzeigen
@@ -49,12 +49,12 @@ async function showPictures(): Promise <void> {
     let ausgabe: MemoryKarten[] = await response.json();
     console.log(ausgabe); 
 
-    let anzeigeDiv: HTMLDivElement = <HTMLDivElement> document.getElementById("bilderDB"); 
+    let anzeigeDiv: HTMLDivElement = <HTMLDivElement> document.getElementById("bilderDB"); //um es auf der HTML Seite anzeigen zu können
     anzeigeDiv.innerHTML = ""; // um es immer zu aktualisieren muss es geleert werden
     
-    for (let i: number = 0; i < ausgabe.length; i++) { //Array durchgehen und alle anzeigen
-        let div: HTMLDivElement = showMemory(ausgabe[i]); //Aufgruf der Funktion mit Übergabe der
-        anzeigeDiv.appendChild(div);
+    for (let i: number = 0; i < ausgabe.length; i++) { //Gesamtes Array durchgehen und alle anzeigen
+        let div: HTMLDivElement = showMemory(ausgabe[i]); //Aufruf der Funktion mit Übergabe der ausgabe
+        anzeigeDiv.appendChild(div); //div an das Anzeigediv anhängen
 
     }
 }
@@ -63,15 +63,15 @@ let buttonAnzeigen: HTMLButtonElement = <HTMLButtonElement>document.getElementBy
 buttonAnzeigen.addEventListener("click", showPictures);
 
 function showMemory (_memory: MemoryKarten): HTMLDivElement {
-    let memory: HTMLDivElement = document.createElement("div");
+    let memory: HTMLDivElement = document.createElement("div"); //Div Element erstellen
     memory.classList.add("BildUrl"); //https://developer.mozilla.org/de/docs/Web/API/Element/classList
 
     let image: HTMLImageElement = document.createElement ("img"); //Um die Bilder anzuzeigen
-    image.src = _memory.url;
+    image.src = _memory.url; //Bilder der Urls anziehen
     memory.appendChild(image);
 
     let url: HTMLParagraphElement = document.createElement("p"); //Um die Urls zu den Bildern zu sehen
-    url.innerText = _memory.url;
+    url.innerText = _memory.url; //Urls als Text anziegen
     memory.appendChild(url);
 
     return memory; // Rückgabewert damit DivElement akzepiert wird
