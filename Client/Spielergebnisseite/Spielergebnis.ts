@@ -26,15 +26,9 @@ let buttonScoredaten: HTMLButtonElement = <HTMLButtonElement> document.getElemen
 buttonScoredaten.addEventListener("click", saveDataScore );
 
 //Speichern der Spielzeit und Name in DB
-async function saveDataScore(event: Event): Promise <void> {
-    event.preventDefault();
-    // let form: FormData = new FormData(document.forms[0]);
+async function saveDataScore(): Promise <void> {
     //let url: string = "http://localhost:8100";
     let url: string = "https://gissose2021mr.herokuapp.com";
-    //--> motzt wegen any nicht mehr
-    //tslint:disable-next-line 
-    // let query: URLSearchParams = new URLSearchParams(<any>form);
-    // url = url + "/bilder" + "?" + query.toString();
     let spielername: string = (<HTMLInputElement> document.getElementById("Name")).value;
     console.log(spielername);
     let response: Response = await fetch(url + "/abschickenScore?spielername=" + spielername);
