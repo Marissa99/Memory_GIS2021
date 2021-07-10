@@ -28,14 +28,14 @@ buttonScoredaten.addEventListener("click", saveDataScore );
 //Speichern der Spielzeit und Name in DB
 async function saveDataScore(event: Event): Promise <void> {
     event.preventDefault();
-    let form: FormData = new FormData(document.forms[0]);
+    // let form: FormData = new FormData(document.forms[0]);
     //let url: string = "http://localhost:8100";
     let url: string = "https://gissose2021mr.herokuapp.com";
     //--> motzt wegen any nicht mehr
     //tslint:disable-next-line 
-    let query: URLSearchParams = new URLSearchParams(<any>form);
-    url = url + "/bilder" + "?" + query.toString();
-    let response: Response = await fetch(url);
+    // let query: URLSearchParams = new URLSearchParams(<any>form);
+    // url = url + "/bilder" + "?" + query.toString();
+    let response: Response = await fetch(url + "/bilder");
     console.log(await response.text()); 
 }
 
