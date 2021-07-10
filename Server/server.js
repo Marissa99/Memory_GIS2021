@@ -21,7 +21,7 @@ function serverStarten(_port) {
 async function handleRequest(_request, _response) {
     console.log("Anfrage angekommen"); //Überprüfung ob Anfragen angekommen sind
     _response.setHeader("content-type", "application/json; charset=utf-8"); //Eigenschaften von JSON
-    _response.setHeader("Access-Control-Allow-Origin", "https://marissa99.github.io/"); //Zugriffserlaubnis: * alle dürfen darauf zugreifen
+    _response.setHeader("Access-Control-Allow-Origin", "*"); //Zugriffserlaubnis: * alle dürfen darauf zugreifen
     if (_request.url) {
         let url = Url.parse(_request.url, true); //umwandlung query in assoziatives Array
         let pathname = url.pathname; //pathname in string speichern
@@ -61,7 +61,9 @@ async function handleRequest(_request, _response) {
         //Pfad um die ScoreDaten in DB zu speichern -->Button auf Spielergebnisseite (Bestätigen und senden)
         else if (pathname == "/abschickenScore") {
             console.log("abschicken Score");
-            console.log(await saveHighscoreData(urlDB, player));
+            let response = await saveHighscoreData(urlDB, player);
+            console.log(response);
+            _response.write(JSON.stringify(response));
         }
         //Pfad für die 10 besten ScoreDaten anzeigen
         else if (pathname == "/anzeigenScore") {

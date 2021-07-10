@@ -29,7 +29,7 @@ function serverStarten(_port: number | string): void {
 async function handleRequest(_request: Http.IncomingMessage, _response: Http.ServerResponse): Promise <void> { 
     console.log("Anfrage angekommen"); //Überprüfung ob Anfragen angekommen sind
     _response.setHeader("content-type", "application/json; charset=utf-8"); //Eigenschaften von JSON
-    _response.setHeader("Access-Control-Allow-Origin", "https://marissa99.github.io/"); //Zugriffserlaubnis: * alle dürfen darauf zugreifen
+    _response.setHeader("Access-Control-Allow-Origin", "*"); //Zugriffserlaubnis: * alle dürfen darauf zugreifen
 
     if (_request.url) {
         let url: Url.UrlWithParsedQuery = Url.parse(_request.url, true); //umwandlung query in assoziatives Array
@@ -78,7 +78,9 @@ async function handleRequest(_request: Http.IncomingMessage, _response: Http.Ser
         //Pfad um die ScoreDaten in DB zu speichern -->Button auf Spielergebnisseite (Bestätigen und senden)
         else if (pathname == "/abschickenScore") {
             console.log("abschicken Score");
-            console.log(await saveHighscoreData(urlDB, player));
+            let response: string =  await saveHighscoreData(urlDB, player);
+            console.log(response);
+            _response.write(JSON.stringify(response));
             
         }
         
