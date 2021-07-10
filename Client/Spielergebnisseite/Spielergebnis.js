@@ -29,7 +29,10 @@ async function saveDataScore(event) {
     //tslint:disable-next-line 
     // let query: URLSearchParams = new URLSearchParams(<any>form);
     // url = url + "/bilder" + "?" + query.toString();
-    let response = await fetch(url + "/bilder");
+    let spielername = document.getElementById("Name").value;
+    console.log(spielername);
+    let response = await fetch(url + "/abschickenScore?spielername=" + spielername);
     console.log(await response.text());
+    window.location.href = "../HTML/Score.html";
 }
 //# sourceMappingURL=Spielergebnis.js.map

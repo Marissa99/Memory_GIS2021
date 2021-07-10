@@ -35,8 +35,11 @@ async function saveDataScore(event: Event): Promise <void> {
     //tslint:disable-next-line 
     // let query: URLSearchParams = new URLSearchParams(<any>form);
     // url = url + "/bilder" + "?" + query.toString();
-    let response: Response = await fetch(url + "/bilder");
-    console.log(await response.text()); 
+    let spielername: string = (<HTMLInputElement> document.getElementById("Name")).value;
+    console.log(spielername);
+    let response: Response = await fetch(url + "/abschickenScore?spielername=" + spielername);
+    console.log(await response.text());
+    window.location.href = "../HTML/Score.html";
 }
 
 
