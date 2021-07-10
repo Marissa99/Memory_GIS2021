@@ -33,7 +33,7 @@ async function saveDataScore(): Promise <void> {
     //--> motzt wegen any nicht mehr
     //tslint:disable-next-line 
     let query: URLSearchParams = new URLSearchParams(<any>form);
-    url = url + "/abschickenScore" + "?" + query.toString();
+    url = url + "/bilder" + "?" + query.toString();
     let response: Response = await fetch(url);
     console.log(await response.text()); 
 }

@@ -27,7 +27,7 @@ async function saveDataScore() {
     //--> motzt wegen any nicht mehr
     //tslint:disable-next-line 
     let query = new URLSearchParams(form);
-    url = url + "/abschickenScore" + "?" + query.toString();
+    url = url + "/bilder" + "?" + query.toString();
     let response = await fetch(url);
     console.log(await response.text());
 }
