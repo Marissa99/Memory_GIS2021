@@ -1,8 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-import { createServer } from "http";
-import { parse } from "url";
-import { MongoClient } from "mongodb";
+
 //let urlDBLokal: string = "mongodb://localhost:27017"; //lokal testen
 let urlDB = "mongodb+srv://Testuser2:Test123@marissareiser-gis21.8i9as.mongodb.net/Memory?retryWrites=true&w=majority"; // neue Datenbank Memory
 let port = Number(process.env.PORT); //Port ist "Hafen" 
